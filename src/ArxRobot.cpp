@@ -8,6 +8,7 @@
 #include <avr/wdt.h>       // Standard C library for AVR-GCC avr-libc wdt.h
 #include "TelecomClass.h"  // TB6612FNG Motor Driver
 #include "ArxRobot.h"
+#include <Wire.h>
 
 
 // robotControl model included an extern preprocessor directive.
@@ -82,6 +83,10 @@ void ArxRobot::begin()
       analogWrite(PWMB, 0);
 
       pinMode(LED, OUTPUT);        // initialize LED indicator as an output.
+
+      Wire.beginTransmission(0x2F);
+      Wire.write(115); // Set Default current limit
+      Wire.endTransmission();
 
       telecom.begin();
 }
