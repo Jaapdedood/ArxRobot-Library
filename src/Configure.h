@@ -74,6 +74,7 @@ const int I2C_SDL = 3;
 #define WAYPOINT_MOVE        0x19   // 0001100   1     9
 #define WAYPOINT_DELETE      0x1A   // 0001101   0     1
 #define WAYPOINT_VIEW_CLICK  0x1B   // 0001101   1     4
+#define SET_CURRENTLIMIT     0x1C   // 0001110   0     1
 
 // note(s)
 // [1] See Waypoint Coordinates class in "Communication between Arduino,
@@ -133,5 +134,4 @@ const uint8_t WAYPOINT_ARRIVE_ID = 0x13;
     01     00               Watchdog timeout
 *************************************************************/
 const uint16_t WATCHDOG_TIMEOUT = 0x0100;
-
 #endif

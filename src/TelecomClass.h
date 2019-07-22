@@ -10,7 +10,7 @@
 #include <EEPROM.h>
 #include "Configure.h"     // 3DoT Hardware Abstraction Layer
 
-#include "FuelGauge.h"     // Fuel Gauge sensor
+#include "PowerManagement.h"     // Fuel Gauge sensor and Current limiting
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
 #include "TB6612FNG.h"     // TB6612FNG Motor Driver
 #include "Watchdog.h"
@@ -148,7 +148,3 @@ class TelecomClass
  * Convert 4 data bytes in array to 32 bit unsigned long
  * uint32_t pingInterval = (((unsigned long)_data[3]) << 24) | (((unsigned long)_data[4]) << 16) | (((unsigned long)_data[5]) << 8) | (unsigned long)_data[6];
  *************************************************************/
-
-
-
-

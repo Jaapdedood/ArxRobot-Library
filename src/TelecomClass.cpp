@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include "Configure.h"       // 3DoT Hardware Abstraction Layer
 
-#include "FuelGauge.h"     // Fuel Gauge sensor
+#include "PowerManagement.h"     // Fuel Gauge sensor and current limiting
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
 #include "TB6612FNG.h"     // TB6612FNG Motor Driver
 #include "Watchdog.h"
@@ -18,7 +18,7 @@
 Packet batteryPacket(BATTERY_ID); // battery telemetry
 Packet telecomPacket(0x00);       // id set by context
 TB6612FNG motor_driver;
-FuelGauge batteryGauge(BATTERY_ID, VBATT_PIN);  // default LiPO
+PowerManagement powerManagement(BATTERY_ID, VBATT_PIN);  // default LiPO
 Watchdog watchdogTimer;
 
 /*
@@ -42,7 +42,7 @@ void TelecomClass::begin()             // initialize the packet
 {
   // initialize objects
   motor_driver.begin();
-  batteryGauge.begin();                // default LiPO
+  powerManagement.begin();                // default LiPO
   batteryPacket.setAccuracy(4);        // change sensor accuracy to +/-4 DN
   batteryPacket.setSamplePeriod(5000); // change sample period from 5 seconds
 
@@ -72,15 +72,15 @@ uint8_t TelecomClass::getLength(){
  *************************************************************/
 void TelecomClass::sendData()
 {
-  uint16_t percentage = batteryGauge.readFuelGauge();
-  batteryPacket.sendSensor(percentage);       // send a 16-bit unsigned word to the control panel.
-  if (percentage == 0) {                      // battery has been depleted
-      motor_driver.motors_safe();               // Need to actually sleep the rover
+    uint16_t percentage = powerManagement.readFuelGauge();
+    batteryPacket.sendSensor(percentage);       // send a 16-bit unsigned word to the control panel.
+    if (percentage == 0) {                      // battery has been depleted
+        motor_driver.motors_safe();               // Need to actually sleep the rover
 #if DEBUG                                 // Message repeats until unit is turned off and battery charged
-      Serial.print("Battery Undervoltage = ");
-      Serial.println(batteryGauge.getVoltage()); // data type is float
-    #endif
-  }
+        Serial.print("Battery Undervoltage = ");
+        Serial.println(powerManagement.getVoltage()); // data type is float
+#endif
+    }
 }
 
 /******************************  Command Decoder ******************************
@@ -304,12 +304,23 @@ void TelecomClass::commandHandler()
    * data[3]    wdt mode and prescaler
    */
   else if (_command == WATCHDOG_SETUP){
-    watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
+      watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
 
-    #if DEBUG
-    Serial.print("wdt prescaler set to: ");
-    Serial.println(_data[3], HEX);
-    #endif
+#if DEBUG
+      Serial.print("wdt prescaler set to: ");
+      Serial.println(_data[3], HEX);
+#endif
+  }
+  /* Set TPS2553 Current limit
+   * 128 is min current, 0 is maximum
+   */
+  else if (_command == SET_CURRENTLIMIT)
+  {
+      powerManagement.setCurrentLimit(_data[3]);
+#if DEBUG
+      Serial.print("Current limit steps set to: ");
+      Serial.println(_data[3], HEX);
+#endif
   }
 }
 
@@ -320,10 +331,10 @@ void TelecomClass::commandHandler()
 void TelecomClass::throwError(uint16_t err){
   _command = 0;                                  // processing complete with error
   telecomPacket.sendPacket(EXCEPTION_ID,err);    // send 0x0E plus 16-bit FSM error code
-  #if DEBUG
+   #if DEBUG
   Serial.print("Command decoder exception 0x0"); // Send duplicate data as text to
   Serial.println(err,HEX);                       // USB=>Arduino IDE Serial Monitor.
-  #endif
+#endif
 }
 
 // **** TODO convert to properties
