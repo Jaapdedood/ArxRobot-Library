@@ -52,8 +52,7 @@ void TwoServoDriver::servos_go(uint8_t* servodata)
  */
 void TwoServoDriver::servos_reset()
 {
-    servoA.setAngle(0);
-    servoB.setAngle(0);
+// TODO: This method
 
 }
 
