@@ -1,6 +1,7 @@
 /*
   TelecomClass.h - Library for handling telecommunications
   Created by Gary Hill, August 13, 2016.
+  Modified by Jaap de Dood.
 */
 
 #ifndef TelecomClass_h     // The #define Guard
@@ -14,6 +15,7 @@
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
 #include "TB6612FNG.h"     // TB6612FNG Motor Driver
 #include "Watchdog.h"
+#include "TwoServoDriver.h"
 
 /*
  *  header .h class member definitions

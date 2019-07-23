@@ -33,8 +33,8 @@ const int BIN1 = 9; // Direction (Analog Pin A1)
 const int BIN2 = 5; // Direction (Analog Pin A2)
 
 const int VBATT_PIN = A5; // A5 is an Arduino reserved word
-const int SERVO_11 = 7;
-const int SERVO_13 = 11;
+const int SERVO_A = 11;
+const int SERVO_B = 7;
 const int I2C_SDA = 2;    // 3.3v I2C
 const int I2C_SDL = 3;
 
@@ -74,7 +74,8 @@ const int I2C_SDL = 3;
 #define WAYPOINT_MOVE        0x19   // 0001100   1     9
 #define WAYPOINT_DELETE      0x1A   // 0001101   0     1
 #define WAYPOINT_VIEW_CLICK  0x1B   // 0001101   1     4
-#define SET_CURRENTLIMIT     0x1C   // 0001110   0     1
+#define MOVE_SERVO           0x1C   // TODO: confused about these comments - Jaap
+#define SET_CURRENTLIMIT     0x1D   //
 
 // note(s)
 // [1] See Waypoint Coordinates class in "Communication between Arduino,

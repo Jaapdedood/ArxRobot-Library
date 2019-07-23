@@ -13,6 +13,7 @@
 #include "TB6612FNG.h"     // TB6612FNG Motor Driver
 #include "Watchdog.h"
 #include "TelecomClass.h"
+#include "TwoServoDriver.h"
 
 // instantiate objectscommandDecoder
 Packet batteryPacket(BATTERY_ID); // battery telemetry
@@ -20,6 +21,8 @@ Packet telecomPacket(0x00);       // id set by context
 TB6612FNG motor_driver;
 PowerManagement powerManagement(BATTERY_ID, VBATT_PIN);  // default LiPO
 Watchdog watchdogTimer;
+TwoServoDriver twoServo_driver;
+
 
 /*
  *  C++ .cpp member class definitions
@@ -42,7 +45,10 @@ void TelecomClass::begin()             // initialize the packet
 {
   // initialize objects
   motor_driver.begin();
+
+
   powerManagement.begin();                // default LiPO
+
   batteryPacket.setAccuracy(4);        // change sensor accuracy to +/-4 DN
   batteryPacket.setSamplePeriod(5000); // change sample period from 5 seconds
 
@@ -236,7 +242,26 @@ void TelecomClass::commandHandler()
    */
   if (_command == MOVE)
   {
-    motor_driver.motors_go(_data);       // Sparkfun TB6612FNG Motor Driver
+      motor_driver.motors_go(_data);       // Sparkfun TB6612FNG Motor Driver
+  }
+  // TODO: SERVO_MOVE and CAMERA_MOVE do the same thing. Remove CAMERA_MOVE? Jeff?
+  else if (_cmmand == SERVO_MOVE)
+  {
+      twoServo_driver.servos.go(_data);
+  }
+  else if (_command == CAMERA_MOVE)
+  {
+      twoServo_driver.servos_go(_data);
+  }
+
+  else if (_command == CAMERA_MOVE_HOME)
+  {
+      twoServo_driver.servos_home();
+  }
+
+  else if (_command == CAMERA_MOVE_RESET)
+  {
+      twoServo_driver.servos_reset();
   }
 
   /*
