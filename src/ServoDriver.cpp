@@ -37,18 +37,20 @@ void ServoDriver::begin(uint8_t pin)   // initialize the packet
 void ServoDriver::setAngle(uint16_t pos)
 {
    angle = pos;
-   if (angle > maxAngle)
-   {
-    angle = maxAngle;
-   }
-   else if(angle < minAngle)
-   {
-    angle = minAngle;
-   }
-   else
-   {
+   // Jaap: removed, since <Servo.h> already does this. See: https://github.com/arduino-libraries/Servo/blob/master/src/avr/Servo.cpp
+   /*
+     if (angle > maxAngle)
+     {
+     angle = maxAngle;
+     }
+     else if(angle < minAngle)
+     {
+     angle = minAngle;
+     }
+     else
+     {
     angle = pos;
-   }
+    }*/
 
    myservo.write(angle);
 
