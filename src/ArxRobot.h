@@ -22,7 +22,9 @@ public:
     ArxRobot();
 
     // Data type and structure descriptions
-    typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
+    //typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
+    typedef bool (*fptr_t) (const uint8_t, uint8_t *, uint8_t); // JEFF 2019-03-06 changed from void to bool
+
     // Now that we have a type which can point to a function (fptr), we can make an instance
     // of that type (in other words, a variable that points to a function)
     // fptr_t anotherFunction;

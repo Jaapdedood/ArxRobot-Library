@@ -134,7 +134,13 @@ void ArxRobot::commandProcessor()
                 // yes, call user defined command handler
                 uint8_t  n = telecom.getLength();     // number of arguments
                 uint8_t *d = telecom.getData();       // points to arguments in data array
-                _onCommand[index].funct (cmd, d, n);  // callback
+                // _onCommand[index].funct (cmd, d, n)   // callback original
+                // callback JEFF 2019-03-06 start
+                if (_onCommand[index].funct (cmd, d, n)) {
+                    // returned true, so also look for internal handler
+                    telecom.commandHandler();
+                }
+                // callback JEFF 2019-03-06 end
             }
             else{
                 // no, call internal command handler

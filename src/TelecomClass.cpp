@@ -329,8 +329,9 @@ void TelecomClass::commandHandler()
    * Set Watchdog Mode and Timeout period
    * data[3]    wdt mode and prescaler
    */
-  else if (_command == WATCHDOG_SETUP){
+  else if (_command == COMM_SETUP){
       watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
+      telecomPacket.sendPacket(PONG_ID);           // JEFF added 2019-03-05
 
 #if DEBUG
       Serial.print("wdt prescaler set to: ");
