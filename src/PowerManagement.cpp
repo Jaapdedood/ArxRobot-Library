@@ -15,6 +15,10 @@
  */
 
 // Constructor
+PowerManagement::PowerManagement()
+{
+
+}
 
 PowerManagement::PowerManagement(uint8_t id, int pin)
 {

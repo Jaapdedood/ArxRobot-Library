@@ -1,57 +1,77 @@
 /*
- * ServoDriver.cpp - Library for PanAndTiltDriver
- * Created by Patrik Hertle, March 27, 2019
- * Modified by Jaap de Dood for ArxRobot Library
- */
+  Created by Jaap de Dood, July 24, 2019
+*/
 
 #include "Arduino.h"
-#include <Servo.h>
+#include "Configure.h"
 #include "ServoDriver.h"
-
 
 /*
  *  C++ .cpp member class definitions
  */
 
 // Constructor
+
 ServoDriver::ServoDriver()
 {
-
 }
 
 /*
- * initialize servo properties to default values
+ * Initializes each servo and it's min/max ranges
+ * Note: number of servos passed as argument since cannot be
+ * obtained within method (treated as pointers inside functions).
+ *
+ * Do not forget to obtain and validate array lengths before calling
+ * this method.
  */
-void ServoDriver::begin(uint8_t pin)   // initialize the packet
+void ServoDriver::begin(uint8_t* pins, uint8_t* maxes, uint8_t* mins, uint8_t servoNos)
 {
-  _pin = pin;
-  myservo.attach(pin);
+    for(int i = 0;i < servoNos; i++)
+    {
+        myServos[i].attach(pins[i]);
+    }
+}
 
-  angle = 0;	//Define angle at first time code running;
+/*
+ * Set servo angles corresponding to data received by command
+ * TODO: This function could be done without servoNos, possibly less safe? Decide. Same for reset and home.
+ */
+void ServoDriver::servos_go(uint8_t* servodata, uint8_t servoNos)
+{
+    uint8_t angles[servoNos];
+
+    for(int i = 0; i < servoNos; i++)
+    {
+        angles[i] = (servodata[3+i] << 8) | servodata[4+i];
+    }
+
+    cli();
+    for(int i = 0; i < servoNos; i++)
+    {
+        myServos[i].write(angles[i]);
+    }
+    sei();
 }
 
 
 /*
- * Checked first if the angle is in the range and than set the Servo to the angle.
+ * Set the servos in a reset angle
  */
-void ServoDriver::setAngle(uint16_t pos)
+void ServoDriver::servos_reset(uint8_t servoNos)
 {
-   angle = pos;
-   // Jaap: removed, since <Servo.h> already does this. See: https://github.com/arduino-libraries/Servo/blob/master/src/avr/Servo.cpp
-   /*
-     if (angle > maxAngle)
-     {
-     angle = maxAngle;
-     }
-     else if(angle < minAngle)
-     {
-     angle = minAngle;
-     }
-     else
-     {
-    angle = pos;
-    }*/
+    for(int i = 0; i < servoNos; i++)
+    {
+        myServos[i].write(90);
+    }
+}
 
-   myservo.write(angle);
-
+/*
+ * Set the servos in the home defined angle
+ */
+void ServoDriver::servos_home(uint8_t* commandData, uint8_t servoNos)
+{
+    for(int i = 0; i < servoNos; i++)
+    {
+        myServos[i].write(commandData[3]);
+    }
 }

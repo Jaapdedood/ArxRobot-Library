@@ -1,19 +1,16 @@
 /*
- * ServoDriver.h - for PanAndTiltDriver
- * Patrik Hertle, March 27, 2019
- * Modified by Jaap de Dood for ArxRobot Library
- */
-#ifndef ServoDriver_h          // The #define Guard
+  Created by Jaap de Dood, July 24, 2019
+*/
+#ifndef ServoDriver_h      // The #define Guard
 #define ServoDriver_h
 
 #include "Arduino.h"     // Arduino library files
+#include "Configure.h"
 #include <Servo.h>
 
-// TODO: Is this .h/.cpp even necessary? All it does is call servo.attach and servo.write from another .h
 /*
  *  header .h class member definitions
  */
-
 class ServoDriver
 {
 public:
@@ -21,20 +18,18 @@ public:
     ServoDriver();
 
     // Public class 'methods'
-    void begin(uint8_t);
-    void setAngle(uint16_t);		//drives the Servo to given angle
-
-
+    void begin(uint8_t*, uint8_t*, uint8_t*, uint8_t);
+    void servos_go(uint8_t*, uint8_t);
+    void servos_reset(uint8_t);
+    void servos_home(uint8_t*, uint8_t);
 private:
-
     // Private class 'methods'
 
     // Private class 'properties'
-    uint8_t _pin;
-    uint16_t angle;
-    Servo myservo;
-    //uint16_t const maxAngle = 180;
-    //uint16_t const minAngle = 0;
+
+    // Instantiate Servo Classes
+    Servo myServos[];
+    //uint16_t angles[];
 
 }; // end of class definition
 

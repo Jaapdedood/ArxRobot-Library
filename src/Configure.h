@@ -10,7 +10,7 @@
  ***************************************************/
 #define FALSE  0
 #define TRUE   1
-#define DEBUG  FALSE
+#define DEBUG  TRUE
 #define ECHO_COMMANDS  TRUE
 
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)

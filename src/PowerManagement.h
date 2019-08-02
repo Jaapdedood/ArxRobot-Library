@@ -23,6 +23,7 @@ class PowerManagement
 public:
 
     // Constructor
+    PowerManagement();
     PowerManagement(uint8_t id, int pin);
 
     // Public class 'methods'

@@ -13,7 +13,6 @@
 #include "TB6612FNG.h"     // TB6612FNG Motor Driver
 #include "Watchdog.h"
 #include "TelecomClass.h"
-#include "TwoServoDriver.h"
 
 // instantiate objectscommandDecoder
 Packet batteryPacket(BATTERY_ID); // battery telemetry
@@ -21,7 +20,7 @@ Packet telecomPacket(0x00);       // id set by context
 TB6612FNG motor_driver;
 PowerManagement powerManagement(BATTERY_ID, VBATT_PIN);  // default LiPO
 Watchdog watchdogTimer;
-TwoServoDriver twoServo_driver;
+ServoDriver servo_driver;
 
 
 /*
@@ -247,21 +246,23 @@ void TelecomClass::commandHandler()
   // TODO: SERVO_MOVE and CAMERA_MOVE do the same thing. Remove CAMERA_MOVE? Jeff?
   else if (_command == SERVO_MOVE)
   {
-      twoServo_driver.servos_go(_data);
+      //passing a 2 to all servo commands as servoNos temporarily, TODO: Update this
+      servo_driver.servos_go(_data, 2);
+      Serial.println("running servo_driver.servos_go");
   }
   else if (_command == CAMERA_MOVE)
   {
-      twoServo_driver.servos_go(_data);
+      servo_driver.servos_go(_data, 2);
   }
 
   else if (_command == CAMERA_MOVE_HOME)
   {
-      twoServo_driver.servos_home();
+      servo_driver.servos_home(_data, 2);
   }
 
   else if (_command == CAMERA_MOVE_RESET)
   {
-      twoServo_driver.servos_reset();
+      servo_driver.servos_reset(2);
   }
 
   /*
