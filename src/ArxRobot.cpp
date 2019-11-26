@@ -8,7 +8,8 @@
 #include <avr/wdt.h>       // Standard C library for AVR-GCC avr-libc wdt.h
 #include "TelecomClass.h"  // TB6612FNG Motor Driver
 #include "ArxRobot.h"
-#include <Wire.h>
+#include "servo3DoT.h"
+#include "twi.h"
 
 
 // robotControl model included an extern preprocessor directive.
@@ -84,10 +85,6 @@ void ArxRobot::begin()
 
       pinMode(LED, OUTPUT);        // initialize LED indicator as an output.
 
-      Wire.beginTransmission(0x2F);
-      Wire.write(115); // Set Default current limit
-      Wire.endTransmission();
-
       telecom.begin();
 }
 
@@ -134,13 +131,7 @@ void ArxRobot::commandProcessor()
                 // yes, call user defined command handler
                 uint8_t  n = telecom.getLength();     // number of arguments
                 uint8_t *d = telecom.getData();       // points to arguments in data array
-                // _onCommand[index].funct (cmd, d, n)   // callback original
-                // callback JEFF 2019-03-06 start
-                if (_onCommand[index].funct (cmd, d, n)) {
-                    // returned true, so also look for internal handler
-                    telecom.commandHandler();
-                }
-                // callback JEFF 2019-03-06 end
+                _onCommand[index].funct (cmd, d, n);  // callback
             }
             else{
                 // no, call internal command handler
@@ -178,6 +169,26 @@ void ArxRobot::_clear_MCUCR_JTD_bit()
   asm("out 0x35, r24");
 }
 
+
+void ArxRobot::setCurrentLimit(uint8_t steps)
+{
+    if(steps > 128)
+    {
+        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
+    }
+    else
+    {
+        TWIInit(); // Sets I2C frequency
+
+        TWIStart(); // Start transmission
+
+        TWIWrite(SLA_W); // Address MCP4017
+
+        TWIWrite(steps); // Write desired resistance value to MCP4017
+
+        TWIStop();
+    }
+}
 /* Notes
 1. The callback construction is modeled on the MIDI library .h file and
    MIDI_Callbacks.ino example.

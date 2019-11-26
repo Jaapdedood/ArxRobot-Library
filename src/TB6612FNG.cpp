@@ -40,7 +40,6 @@ void TB6612FNG::motors_stop()        // initialize or stop TB6612FNG
     motorB.brake();
 }
 
-
 void TB6612FNG::motors_safe()        // initialize or stop TB6612FNG
 {
     motors_stop();                     // motors off
