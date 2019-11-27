@@ -10,6 +10,7 @@
 #include "ArxRobot.h"
 #include "servo3DoT.h"
 #include "twi.h"
+#include <avr/sleep.h>
 
 
 // robotControl model included an extern preprocessor directive.
@@ -45,6 +46,7 @@ ArxRobot::ArxRobot()  // based on Firmata.cpp constructor
    * firmwareVersionVector = 0;
    * systemReset();
    */
+  loopCounter = 0;
 }
 
 /*
@@ -100,6 +102,15 @@ void ArxRobot::loop()
     if(Serial.available())commandProcessor();
 #endif
     telecom.sendData();
+
+    // Check whether battery voltage is below 3.3V every 100 loops
+    if(!(loopCounter % 100)){
+        if(readBatteryVoltage() < 745){
+            alertFatalError();
+        }
+    }
+    loopCounter++;
+    Serial.println(loopCounter);
 }
 
 /*
@@ -109,6 +120,63 @@ void ArxRobot::setOnCommand(cmdFunc_t* functions,uint8_t arraysize)
 {
   _onCommand = functions;
   _arraysize = arraysize;
+}
+
+void ArxRobot::setCurrentLimit(uint8_t steps)
+{
+    if(steps > 128)
+    {
+        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
+    }
+    else
+    {
+        TWIInit(); // Sets I2C frequency
+
+        TWIStart(); // Start transmission
+
+        TWIWrite(SLA_W); // Address MCP4017
+
+        TWIWrite(steps); // Write desired resistance value to MCP4017
+
+        TWIStop();
+    }
+}
+
+uint16_t ArxRobot::readBatteryVoltage(){
+    pinMode(A5, INPUT);
+    uint16_t totalVoltage = 0;
+    for(int i=0;i<7;i++){
+      uint16_t VBATT = analogRead(A5);
+      totalVoltage = totalVoltage + VBATT;    
+    }
+    uint16_t averageVoltage = totalVoltage/5;
+    return averageVoltage;
+}
+
+void ArxRobot::alertFatalError(){
+    pinMode(17, OUTPUT);
+    pinMode(TXLED1, OUTPUT);
+    pinMode(TXLED0, OUTPUT);
+    pinMode(13, OUTPUT);
+    pinMode(RXLED0, OUTPUT);
+    pinMode(RXLED1, OUTPUT);
+
+    for(int i = 0;i<100;i++){
+        digitalWrite(17,HIGH);
+        digitalWrite(TXLED1, LOW);
+        digitalWrite(13, HIGH);
+        digitalWrite(RXLED1, LOW);
+        delay(100);
+        digitalWrite(17,LOW);
+        digitalWrite(TXLED0, HIGH);
+        digitalWrite(13, LOW);
+        digitalWrite(RXLED0, HIGH);
+        delay(100);
+    }
+
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    sleep_mode();
 }
 
 /*********************
@@ -169,26 +237,6 @@ void ArxRobot::_clear_MCUCR_JTD_bit()
   asm("out 0x35, r24");
 }
 
-
-void ArxRobot::setCurrentLimit(uint8_t steps)
-{
-    if(steps > 128)
-    {
-        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
-    }
-    else
-    {
-        TWIInit(); // Sets I2C frequency
-
-        TWIStart(); // Start transmission
-
-        TWIWrite(SLA_W); // Address MCP4017
-
-        TWIWrite(steps); // Write desired resistance value to MCP4017
-
-        TWIStop();
-    }
-}
 /* Notes
 1. The callback construction is modeled on the MIDI library .h file and
    MIDI_Callbacks.ino example.

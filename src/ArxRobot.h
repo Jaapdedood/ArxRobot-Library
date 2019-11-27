@@ -39,6 +39,8 @@ public:
     void loop();
     void setOnCommand(cmdFunc_t*,uint8_t);
     void setCurrentLimit(uint8_t);
+    uint16_t readBatteryVoltage(); // TODO move this to appropriate class. Placed here since Fuelgauge class may be rebuilt soon.
+    void alertFatalError();        // TODO Same as readBatteryVoltage, + incorporate telecom data to app
 
 private:
     // Private class 'methods'
@@ -49,6 +51,7 @@ private:
   // Private class 'properties'
   static cmdFunc_t* _onCommand;
   uint8_t _arraysize;
+  uint8_t loopCounter;
 
 };
 
