@@ -103,14 +103,13 @@ void ArxRobot::loop()
 #endif
     telecom.sendData();
 
-    // Check whether battery voltage is below 3.3V every 100 loops
+    // Check whether battery voltage is below 3.3V every 100 or so loops
     if(!(loopCounter % 100)){
         if(readBatteryVoltage() < 745){
             alertFatalError();
         }
     }
     loopCounter++;
-    Serial.println(loopCounter);
 }
 
 /*
