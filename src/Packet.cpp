@@ -11,9 +11,9 @@
 #include <limits.h>      // Defines constants with the limits of fundamental integral types (UINT_MAX = 2^16 - 1)
 #include "Configure.h"     // 3DoT Hardware Abstraction Layer
 
-#include "PowerManagement.h"     // Fuel Gauge sensor and current limiting
+#include "FuelGauge.h"     // Fuel Gauge sensor
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
-#include "TB6612FNG.h"     // TB6612FNG Motor Driver
+#include "MotorDriver.h"    
 #include "Watchdog.h"
 
 /*

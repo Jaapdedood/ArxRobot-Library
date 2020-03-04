@@ -1,9 +1,10 @@
 /*
-  TB6612FNG.h - TB6612FNG H-Bridge
-  Created by Gary Hill, August 13, 2016.
+  DRV8848.h - DRV8848 Motor Driver
+  Created by Jaap de Dood, January 9 2020. 
+  Based on "TB6612FNG.h" by Gary Hill
 */
-#ifndef TB6612FNG_h      // The #define Guard
-#define TB6612FNG_h
+#ifndef MotorDriver_h      // The #define Guard
+#define MotorDriver_h
 
 #include "Arduino.h"     // Arduino library files
 #include "Configure.h"
@@ -13,11 +14,11 @@
  *  header .h class member definitions
  */
 
-class TB6612FNG
+class MotorDriver
 {
 public:
     // Constructor
-    TB6612FNG();
+    MotorDriver();
 
     // Public class 'methods'
     void begin();
@@ -38,6 +39,17 @@ private:
 
 #endif
 
+/* DRV8848 Truth Table:
+    xIN1    xIN2    xOUT1   xOUT2   Function
+    0       0       Z       Z       Coast (fast decay)
+    0       1       L       H       Reverse
+    1       0       H       L       Forward
+    1       1       L       L       Brake (slow decay)
+
+    Note: Pins AIN1 and AIN2 are tri-level, so when they are left Hi-Z, they are not internally pulled to logic low.
+    When AIN1 or AIN2 are set to Hi-z and not in parallel mode, the output driver maintains the previous state.
+*/
+
 /* TB6612FNG Control Functions
      Source: H-SW Control Functions found in the Datasheet on Page 4
              https://www.sparkfun.com/datasheets/Robotics/TB6612FNG.pdf
@@ -48,3 +60,4 @@ private:
               1     0       FORWARD  (CW)
               1     1       Short brake
 */
+

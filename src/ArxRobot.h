@@ -9,7 +9,9 @@
 // extern const uint8_t CMD_LIST_SIZE;
 #include "Arduino.h"       // Arduino library files
 #include <avr/wdt.h>       // Standard C library for AVR-GCC avr-libc wdt.h
-#include "TelecomClass.h"  // TB6612FNG Motor Driver
+#include "TelecomClass.h"  // DRV8848 Motor Driver
+#include "servo3DoT.h"
+#include "twi.h"
 
 /*
  *  header .h class member definitions
@@ -22,9 +24,7 @@ public:
     ArxRobot();
 
     // Data type and structure descriptions
-    //typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
-    typedef bool (*fptr_t) (const uint8_t, uint8_t *, uint8_t); // JEFF 2019-03-06 changed from void to bool
-
+    typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
     // Now that we have a type which can point to a function (fptr), we can make an instance
     // of that type (in other words, a variable that points to a function)
     // fptr_t anotherFunction;
@@ -38,6 +38,9 @@ public:
     void begin();
     void loop();
     void setOnCommand(cmdFunc_t*,uint8_t);
+    void setCurrentLimit(uint8_t);
+    uint16_t readBatteryVoltage(); // TODO move this to appropriate class. Placed here since Fuelgauge class may be rebuilt soon.
+    void alertFatalError();        // TODO Same as readBatteryVoltage, + incorporate telecom data to app
 
 private:
     // Private class 'methods'
@@ -48,6 +51,7 @@ private:
   // Private class 'properties'
   static cmdFunc_t* _onCommand;
   uint8_t _arraysize;
+  uint8_t loopCounter;
 
 };
 

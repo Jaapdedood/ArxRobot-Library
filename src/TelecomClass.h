@@ -1,7 +1,6 @@
 /*
   TelecomClass.h - Library for handling telecommunications
   Created by Gary Hill, August 13, 2016.
-  Modified by Jaap de Dood.
 */
 
 #ifndef TelecomClass_h     // The #define Guard
@@ -11,11 +10,10 @@
 #include <EEPROM.h>
 #include "Configure.h"     // 3DoT Hardware Abstraction Layer
 
-#include "PowerManagement.h"     // Fuel Gauge sensor and Current limiting
+#include "FuelGauge.h"     // Fuel Gauge sensor
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
-#include "TB6612FNG.h"     // TB6612FNG Motor Driver
+#include "MotorDriver.h"     // DRV8848 Motor Driver
 #include "Watchdog.h"
-#include "ServoDriver.h"
 
 /*
  *  header .h class member definitions
@@ -150,3 +148,7 @@ class TelecomClass
  * Convert 4 data bytes in array to 32 bit unsigned long
  * uint32_t pingInterval = (((unsigned long)_data[3]) << 24) | (((unsigned long)_data[4]) << 16) | (((unsigned long)_data[5]) << 8) | (unsigned long)_data[6];
  *************************************************************/
+
+
+
+

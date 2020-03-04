@@ -6,9 +6,11 @@
 
 #include "Arduino.h"       // Arduino library files
 #include <avr/wdt.h>       // Standard C library for AVR-GCC avr-libc wdt.h
-#include "TelecomClass.h"  // TB6612FNG Motor Driver
+#include "TelecomClass.h"  // DRV8848 Motor Driver
 #include "ArxRobot.h"
-#include <Wire.h>
+#include "servo3DoT.h"
+#include "twi.h"
+#include <avr/sleep.h>
 
 
 // robotControl model included an extern preprocessor directive.
@@ -44,6 +46,7 @@ ArxRobot::ArxRobot()  // based on Firmata.cpp constructor
    * firmwareVersionVector = 0;
    * systemReset();
    */
+  loopCounter = 0;
 }
 
 /*
@@ -77,16 +80,10 @@ void ArxRobot::begin()
        */
       //while (!Serial) {}       // wait for USB serial port to connect. Needed for Leonardo only
 #endif
-      pinMode(PWMA, OUTPUT);
-      pinMode(PWMB, OUTPUT);
-      analogWrite(PWMA, 0);
-      analogWrite(PWMB, 0);
+
+    /*There used to be code here to write 0 to pwma, pwmb. Probably unecessary so removed. - Jaap*/
 
       pinMode(LED, OUTPUT);        // initialize LED indicator as an output.
-
-      Wire.beginTransmission(0x2F);
-      Wire.write(115); // Set Default current limit
-      Wire.endTransmission();
 
       telecom.begin();
 }
@@ -103,6 +100,14 @@ void ArxRobot::loop()
     if(Serial.available())commandProcessor();
 #endif
     telecom.sendData();
+
+    // Check whether battery voltage is below 3.3V every 255 loops - loopcounter is an 8-bit int
+    if(!(loopCounter == 255)){
+        if(readBatteryVoltage() < 745){
+            alertFatalError();
+        }
+    }
+    loopCounter++;
 }
 
 /*
@@ -112,6 +117,64 @@ void ArxRobot::setOnCommand(cmdFunc_t* functions,uint8_t arraysize)
 {
   _onCommand = functions;
   _arraysize = arraysize;
+}
+
+void ArxRobot::setCurrentLimit(uint8_t steps)
+{
+    if(steps > 128)
+    {
+        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
+    }
+    else
+    {
+        TWIInit(); // Sets I2C frequency
+
+        TWIStart(); // Start transmission
+
+        TWIWrite(SLA_W); // Address MCP4017
+
+        TWIWrite(steps); // Write desired resistance value to MCP4017
+
+        TWIStop();
+    }
+}
+
+uint16_t ArxRobot::readBatteryVoltage(){
+    pinMode(A5, INPUT);
+    uint16_t totalVoltage = 0;
+    for(int i=0;i<7;i++){
+      uint16_t VBATT = analogRead(A5);
+      totalVoltage = totalVoltage + VBATT;    
+    }
+    uint16_t averageVoltage = totalVoltage/5;
+    return averageVoltage;
+}
+
+void ArxRobot::alertFatalError(){
+    pinMode(17, OUTPUT);
+    pinMode(13, OUTPUT);
+    // TX/RX LEDs
+    pinMode(0, OUTPUT);
+    pinMode(1, OUTPUT);
+
+
+    // Blink like mad
+    for(int i = 0;i<100;i++){
+        digitalWrite(17,HIGH);
+        digitalWrite(0, LOW);
+        digitalWrite(13, HIGH);
+        digitalWrite(1, LOW);
+        delay(100);
+        digitalWrite(17,LOW);
+        digitalWrite(0, HIGH);
+        digitalWrite(13, LOW);
+        digitalWrite(1, HIGH);
+        delay(100);
+    }
+
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    sleep_mode();
 }
 
 /*********************
@@ -134,13 +197,7 @@ void ArxRobot::commandProcessor()
                 // yes, call user defined command handler
                 uint8_t  n = telecom.getLength();     // number of arguments
                 uint8_t *d = telecom.getData();       // points to arguments in data array
-                // _onCommand[index].funct (cmd, d, n)   // callback original
-                // callback JEFF 2019-03-06 start
-                if (_onCommand[index].funct (cmd, d, n)) {
-                    // returned true, so also look for internal handler
-                    telecom.commandHandler();
-                }
-                // callback JEFF 2019-03-06 end
+                _onCommand[index].funct (cmd, d, n);  // callback
             }
             else{
                 // no, call internal command handler

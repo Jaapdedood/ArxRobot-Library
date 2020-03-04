@@ -8,20 +8,18 @@
 #include <EEPROM.h>
 #include "Configure.h"       // 3DoT Hardware Abstraction Layer
 
-#include "PowerManagement.h"     // Fuel Gauge sensor and current limiting
+#include "FuelGauge.h"     // Fuel Gauge sensor
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
-#include "TB6612FNG.h"     // TB6612FNG Motor Driver
+#include "MotorDriver.h"     // DRV8848 Motor Driver
 #include "Watchdog.h"
 #include "TelecomClass.h"
 
 // instantiate objectscommandDecoder
 Packet batteryPacket(BATTERY_ID); // battery telemetry
 Packet telecomPacket(0x00);       // id set by context
-TB6612FNG motor_driver;
-PowerManagement powerManagement(BATTERY_ID, VBATT_PIN);  // default LiPO
+DRV8848 motor_driver;
+FuelGauge batteryGauge(BATTERY_ID, VBATT_PIN);  // default LiPO
 Watchdog watchdogTimer;
-ServoDriver servo_driver;
-
 
 /*
  *  C++ .cpp member class definitions
@@ -44,10 +42,7 @@ void TelecomClass::begin()             // initialize the packet
 {
   // initialize objects
   motor_driver.begin();
-
-
-  powerManagement.begin();                // default LiPO
-
+  batteryGauge.begin();                // default LiPO
   batteryPacket.setAccuracy(4);        // change sensor accuracy to +/-4 DN
   batteryPacket.setSamplePeriod(5000); // change sample period from 5 seconds
 
@@ -77,15 +72,15 @@ uint8_t TelecomClass::getLength(){
  *************************************************************/
 void TelecomClass::sendData()
 {
-    uint16_t percentage = powerManagement.readFuelGauge();
-    batteryPacket.sendSensor(percentage);       // send a 16-bit unsigned word to the control panel.
-    if (percentage == 0) {                      // battery has been depleted
-        motor_driver.motors_safe();               // Need to actually sleep the rover
+  uint16_t percentage = batteryGauge.readFuelGauge();
+  batteryPacket.sendSensor(percentage);       // send a 16-bit unsigned word to the control panel.
+  if (percentage == 0) {                      // battery has been depleted
+      motor_driver.motors_safe();               // Need to actually sleep the rover
 #if DEBUG                                 // Message repeats until unit is turned off and battery charged
-        Serial.print("Battery Undervoltage = ");
-        Serial.println(powerManagement.getVoltage()); // data type is float
-#endif
-    }
+      Serial.print("Battery Undervoltage = ");
+      Serial.println(batteryGauge.getVoltage()); // data type is float
+    #endif
+  }
 }
 
 /******************************  Command Decoder ******************************
@@ -241,28 +236,7 @@ void TelecomClass::commandHandler()
    */
   if (_command == MOVE)
   {
-      motor_driver.motors_go(_data);       // Sparkfun TB6612FNG Motor Driver
-  }
-  // TODO: SERVO_MOVE and CAMERA_MOVE do the same thing. Remove CAMERA_MOVE? Jeff?
-  else if (_command == SERVO_MOVE)
-  {
-      //passing a 2 to all servo commands as servoNos temporarily, TODO: Update this
-      servo_driver.servos_go(_data, 2);
-      Serial.println("running servo_driver.servos_go");
-  }
-  else if (_command == CAMERA_MOVE)
-  {
-      servo_driver.servos_go(_data, 2);
-  }
-
-  else if (_command == CAMERA_MOVE_HOME)
-  {
-      servo_driver.servos_home(_data, 2);
-  }
-
-  else if (_command == CAMERA_MOVE_RESET)
-  {
-      servo_driver.servos_reset(2);
+    motor_driver.motors_go(_data);       // Sparkfun DRV8848 Motor Driver
   }
 
   /*
@@ -329,25 +303,13 @@ void TelecomClass::commandHandler()
    * Set Watchdog Mode and Timeout period
    * data[3]    wdt mode and prescaler
    */
-  else if (_command == COMM_SETUP){
-      watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
-      telecomPacket.sendPacket(PONG_ID);           // JEFF added 2019-03-05
+  else if (_command == WATCHDOG_SETUP){
+    watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
 
-#if DEBUG
-      Serial.print("wdt prescaler set to: ");
-      Serial.println(_data[3], HEX);
-#endif
-  }
-  /* Set TPS2553 Current limit
-   * 128 is min current, 0 is maximum
-   */
-  else if (_command == SET_CURRENTLIMIT)
-  {
-      powerManagement.setCurrentLimit(_data[3]);
-#if DEBUG
-      Serial.print("Current limit steps set to: ");
-      Serial.println(_data[3], HEX);
-#endif
+    #if DEBUG
+    Serial.print("wdt prescaler set to: ");
+    Serial.println(_data[3], HEX);
+    #endif
   }
 }
 
@@ -358,10 +320,10 @@ void TelecomClass::commandHandler()
 void TelecomClass::throwError(uint16_t err){
   _command = 0;                                  // processing complete with error
   telecomPacket.sendPacket(EXCEPTION_ID,err);    // send 0x0E plus 16-bit FSM error code
-   #if DEBUG
+  #if DEBUG
   Serial.print("Command decoder exception 0x0"); // Send duplicate data as text to
   Serial.println(err,HEX);                       // USB=>Arduino IDE Serial Monitor.
-#endif
+  #endif
 }
 
 // **** TODO convert to properties

@@ -1,26 +1,20 @@
 /*
-  PowerManagement.h - Formerly FuelGauge.h Reads ADC DN, converts to voltage, and based on battery chemistry converts
+  FuelGauge.cpp - Reads ADC DN, converts to voltage, and based on battery chemistry converts
   to a percentage, which is sent to the control panel. On undervoltage condition robot is
   place in a safe state.
-  Contains functions for current limiting using TPS2553 and MCP4017
-  Created by Gary Hill, August 13, 2016
-  Edited by Jaap de Dood, July 11, 2019
+  Created by Gary Hill, August 13, 2016.
 */
 
 #include "Arduino.h"
-#include "PowerManagement.h"
+#include "FuelGauge.h"
 
 /*
  *  C++ .cpp member class definitions
  */
 
 // Constructor
-PowerManagement::PowerManagement()
-{
 
-}
-
-PowerManagement::PowerManagement(uint8_t id, int pin)
+FuelGauge::FuelGauge(uint8_t id, int pin)
 {
   _id = id;
   _pin = pin;
@@ -30,7 +24,7 @@ PowerManagement::PowerManagement(uint8_t id, int pin)
 /*
  * initialize battery properties to default values
  */
-void PowerManagement::begin()      // initialize the packet
+void FuelGauge::begin()      // initialize the packet
 {
   setBatteyChem(LiPO);
 }
@@ -39,7 +33,7 @@ void PowerManagement::begin()      // initialize the packet
 /*
  *  Battery properties are defined by resistor divider and battery chemistry
  */
-void PowerManagement::setBatteyChem(Chem batt)
+void  FuelGauge::setBatteyChem(Chem batt)
 {
   #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
   // Voltage Divider Network
@@ -74,7 +68,7 @@ void PowerManagement::setBatteyChem(Chem batt)
 /*
  * simply return battery voltage as a floating point number
  */
- float PowerManagement::getVoltage()
+ float FuelGauge::getVoltage()
  {
    float DN = (float) analogRead(_pin); // read adc and cast as float with 8-byte (64 bit) precision
    return DN/_K;                        // convert to voltage
@@ -85,31 +79,11 @@ void PowerManagement::setBatteyChem(Chem batt)
  * typical voltages for target battery when fully charged and depleted.
  * All variable units are DN.
  */
-uint16_t PowerManagement::readFuelGauge()
+uint16_t FuelGauge::readFuelGauge()
 {
   float V = (float) analogRead(_pin);    // read adc and cast as float with 8-byte (64 bit) precision
   V = 100*(V - _V0)/ _dV;                // convert to fuel gauge reading as a percentage (could use Arduino Map function)
   return (uint16_t) constrain(V,0,100);  // constrain to a floating point value between 0% and 100%
-}
-
-void PowerManagement::setCurrentLimit(uint8_t steps)
-{
-    if(steps > 128)
-    {
-        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
-    }
-    else
-    {
-        TWIInit(); // Sets I2C frequency
-
-        TWIStart(); // Start transmission
-
-        TWIWrite(SLA_W); // Address MCP4017
-
-        TWIWrite(steps); // Write desired resistance value to MCP4017
-
-        TWIStop();
-    }
 }
 
 /*

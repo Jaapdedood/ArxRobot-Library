@@ -10,16 +10,16 @@
  ***************************************************/
 #define FALSE  0
 #define TRUE   1
-#define DEBUG  TRUE
+#define DEBUG  FALSE
 #define ECHO_COMMANDS  TRUE
 
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
-//Code in here will only be compiled if an Arduino Leonardo is used.
 const int LED = 14;  // RXLED LED on 3DoT board, TXLED wired to PD5
 #else
 const int LED = 13;  // Arduino UNO and Rosco wired to 13
 #endif
 
+#if BOARD_VERSION == 0x00 // 3DoT v9.04
 const int STBY = 8;  // standby  (Sparkfun ProMicro Analog Pin A0)
 
 //Motor A
@@ -31,10 +31,20 @@ const int AIN2 = 4; // Direction
 const int PWMB = 10;  // Speed control
 const int BIN1 = 9; // Direction (Analog Pin A1)
 const int BIN2 = 5; // Direction (Analog Pin A2)
+#else
+const int STBY = 4; // NSLEEP = STBY
+//Motor A
+const int AIN1 = 6;  // Direction
+const int AIN2 = 9; // Direction
+
+//Motor B
+const int BIN1 = 10; // Direction (Analog Pin A1)
+const int BIN2 = 5; // Direction (Analog Pin A2)
+#endif
 
 const int VBATT_PIN = A5; // A5 is an Arduino reserved word
-const int SERVO_A = 11;
-const int SERVO_B = 7;
+const int SERVO_11 = 7;
+const int SERVO_13 = 11;
 const int I2C_SDA = 2;    // 3.3v I2C
 const int I2C_SDL = 3;
 
@@ -63,7 +73,7 @@ const int I2C_SDL = 3;
 #define WAKEUP               0x0B   // 0000101   1     0
 #define HEADLIGHT_OFF        0x0C   // 0000110   0     0
 #define HEADLIGHT_ON         0x0D   // 0000110   1     0
-#define COMM_SETUP           0x10   // 0001000   0     1   => see table following (pre-implementation 7/28/2016 PING_INTERVAL allowed for 4 byte argument)
+#define WATCHDOG_SETUP       0x10   // 0001000   0     1   => see table following (pre-implementation 7/28/2016 PING_INTERVAL allowed for 4 byte argument)
 #define PING                 0x11   // 0001000   1     0
 #define HEADING              0x12   // 0001001   0     2
 #define CURRENT_COORD        0x13   // 0001001   1     see note [1]
@@ -74,8 +84,6 @@ const int I2C_SDL = 3;
 #define WAYPOINT_MOVE        0x19   // 0001100   1     9
 #define WAYPOINT_DELETE      0x1A   // 0001101   0     1
 #define WAYPOINT_VIEW_CLICK  0x1B   // 0001101   1     4
-#define SERVO_MOVE           0x1C   // TODO: confused about these comments - Jaap
-#define SET_CURRENTLIMIT     0x1D   //
 
 // note(s)
 // [1] See Waypoint Coordinates class in "Communication between Arduino,
@@ -135,4 +143,5 @@ const uint8_t WAYPOINT_ARRIVE_ID = 0x13;
     01     00               Watchdog timeout
 *************************************************************/
 const uint16_t WATCHDOG_TIMEOUT = 0x0100;
+
 #endif

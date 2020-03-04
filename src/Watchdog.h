@@ -10,7 +10,7 @@
 #include "Arduino.h"     // Arduino library files  
 #include <avr/wdt.h>     // Standard C library for AVR-GCC avr-libc Arduino\hardware\tools\avr\avr\include\avr\wdt.h
 #include "Packet.h"      // packetize and send data to the 3DoT application => Arxterra control panel
-#include "TB6612FNG.h"   // TB6612FNG Motor Driver
+#include "MotorDriver.h"   // DRV8848 Motor Driver
 
 /* 
  *  header .h class member definitions

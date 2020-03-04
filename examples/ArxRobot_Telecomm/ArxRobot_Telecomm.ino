@@ -112,6 +112,9 @@ void setup()
   */
   motorPWM.setAccuracy(1);          // change sensor accuracy from +/-2 DN to +/-1 DN    (-- this line is optional --)
   motorPWM.setSamplePeriod(500);    // change sample period from 1 second to 0.5 seconds (-- this line is optional --)
+
+  ArxRobot.setCurrentLimit(0);     // set current limit to max current ~= 500mA per motor
+                                    // to set a lower current limit, see https://www.arxterra.com/current-limit/
 }
 
 void loop()
