@@ -21,15 +21,16 @@ MotorDriver::MotorDriver()
 
 void MotorDriver::begin()
 {
-#if BOARD_VERSION == 0x00
+#if defined(ARDUINO_AVR_3DOT)
     pinMode(STBY,OUTPUT);
     this->motorA.begin(AIN1, AIN2, PWMA);
     this->motorB.begin(BIN1, BIN2, PWMB);
     motors_stop();                     // motors off
-    #else
-    pinMode(NSLEEP,OUTPUT);
+#else
+    pinMode(STBY,OUTPUT);
     this->motorA.begin(AIN1, AIN2);
     this->motorB.begin(BIN1, BIN2);
+    motors_stop();                     // motors off
 #endif
     digitalWrite(STBY, HIGH);        // MotorDriver enabled
 }

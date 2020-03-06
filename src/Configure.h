@@ -19,7 +19,7 @@ const int LED = 14;  // RXLED LED on 3DoT board, TXLED wired to PD5
 const int LED = 13;  // Arduino UNO and Rosco wired to 13
 #endif
 
-#if BOARD_VERSION == 0x00 // 3DoT v9.04
+#if defined(ARDUINO_AVR_3DOT)
 const int STBY = 8;  // standby  (Sparkfun ProMicro Analog Pin A0)
 
 //Motor A

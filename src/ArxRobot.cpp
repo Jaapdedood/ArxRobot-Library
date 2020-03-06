@@ -102,7 +102,7 @@ void ArxRobot::loop()
     telecom.sendData();
 
     // Check whether battery voltage is below 3.3V every 255 loops - loopcounter is an 8-bit int
-    if(!(loopCounter == 255)){
+    if(loopCounter == 255){
         if(readBatteryVoltage() < 745){
             alertFatalError();
         }

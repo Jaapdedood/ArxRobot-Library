@@ -10,14 +10,14 @@
 
 #include "FuelGauge.h"     // Fuel Gauge sensor
 #include "Packet.h"        // packetize and send data to the 3DoT application => Arxterra control panel
-#include "MotorDriver.h"     // DRV8848 Motor Driver
+#include "MotorDriver.h"    
 #include "Watchdog.h"
 #include "TelecomClass.h"
 
 // instantiate objectscommandDecoder
 Packet batteryPacket(BATTERY_ID); // battery telemetry
 Packet telecomPacket(0x00);       // id set by context
-DRV8848 motor_driver;
+MotorDriver motor_driver;
 FuelGauge batteryGauge(BATTERY_ID, VBATT_PIN);  // default LiPO
 Watchdog watchdogTimer;
 
@@ -236,7 +236,7 @@ void TelecomClass::commandHandler()
    */
   if (_command == MOVE)
   {
-    motor_driver.motors_go(_data);       // Sparkfun DRV8848 Motor Driver
+    motor_driver.motors_go(_data);       
   }
 
   /*

@@ -18,7 +18,12 @@ public:
     Motor();
 
     // Public class 'methods'
+    // could maybe overload begin() instead..?
+    #if defined(ARDUINO_AVR_3DOT)
+    void begin(uint8_t, uint8_t, uint8_t);
+    #else
     void begin(uint8_t, uint8_t);
+    #endif
     void brake();
     void go(uint8_t, uint8_t);
 
