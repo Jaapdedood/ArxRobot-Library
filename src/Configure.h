@@ -73,7 +73,7 @@ const int I2C_SDL = 3;
 #define WAKEUP               0x0B   // 0000101   1     0
 #define HEADLIGHT_OFF        0x0C   // 0000110   0     0
 #define HEADLIGHT_ON         0x0D   // 0000110   1     0
-#define WATCHDOG_SETUP       0x10   // 0001000   0     1   => see table following (pre-implementation 7/28/2016 PING_INTERVAL allowed for 4 byte argument)
+#define COMM_SETUP           0x10   // 0001000   0     1   => see table following (pre-implementation 7/28/2016 PING_INTERVAL allowed for 4 byte argument)
 #define PING                 0x11   // 0001000   1     0
 #define HEADING              0x12   // 0001001   0     2
 #define CURRENT_COORD        0x13   // 0001001   1     see note [1]

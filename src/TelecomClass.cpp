@@ -303,7 +303,7 @@ void TelecomClass::commandHandler()
    * Set Watchdog Mode and Timeout period
    * data[3]    wdt mode and prescaler
    */
-  else if (_command == WATCHDOG_SETUP){
+  else if (_command == COMM_SETUP){
     watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
 
     #if DEBUG
