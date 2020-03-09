@@ -21,7 +21,7 @@ MotorDriver::MotorDriver()
 
 void MotorDriver::begin()
 {
-#if defined(ARDUINO_AVR_3DOT)
+#if defined(ARDUINO_AVR_3DOT_LEGACY)
     pinMode(STBY,OUTPUT);
     this->motorA.begin(AIN1, AIN2, PWMA);
     this->motorB.begin(BIN1, BIN2, PWMB);

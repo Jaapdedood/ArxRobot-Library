@@ -19,7 +19,7 @@ public:
 
     // Public class 'methods'
     // could maybe overload begin() instead..?
-    #if defined(ARDUINO_AVR_3DOT)
+    #if defined(ARDUINO_AVR_3DOT_LEGACY)
     void begin(uint8_t, uint8_t, uint8_t);
     #else
     void begin(uint8_t, uint8_t);

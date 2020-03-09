@@ -18,7 +18,7 @@ Motor::Motor()
 /*
  * initialize motor properties to default values
  */
-#if defined(ARDUINO_AVR_3DOT)
+#if defined(ARDUINO_AVR_3DOT_LEGACY)
 void Motor::begin(uint8_t pin1, uint8_t pin2, uint8_t pinPWM)   // initialize the packet
 {
   _pin1 = pin1;
@@ -47,7 +47,7 @@ void Motor::brake()
 // direction: FORWARD = index 1, BACKWARD = index 2, BRAKE = index 3, RELEASE = index 4
 void Motor::go(uint8_t dir, uint8_t pwm)
 {
-#if defined(ARDUINO_AVR_3DOT)
+#if defined(ARDUINO_AVR_3DOT_LEGACY)
   bool out1, out2;
 
   switch (dir)  // set dir = motordata[1] for motor A (left)
