@@ -305,6 +305,7 @@ void TelecomClass::commandHandler()
    */
   else if (_command == COMM_SETUP){
     watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
+    telecomPacket.sendPacket(PONG_ID);                    // ArxRobot app expects a pong response - JEFF 2020-03-09
 
     #if DEBUG
     Serial.print("wdt prescaler set to: ");
