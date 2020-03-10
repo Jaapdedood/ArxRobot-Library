@@ -15,6 +15,12 @@ ArxRobot ArxRobot;       // instantiated as ArxRobot at end of class header
  * Command Example
  * Step 1: Assign new command mnemonics ID numbers
  *         In our example we will be adding 3 custom commands (2 new and one predefined).
+ *         In the case of intercepting a predefined command, you have the option of
+ *         returning true to allow the predefined command to execute after your custom code.
+ *         An example of this would be intercepting COMM_SETUP to perform any operations
+ *         that should always happen when the ArxRobot app initiates a connection, such as
+ *         reporting current servo positions, but not defeat the predefined behavior.
+ *         In all other situations, your custom command handler should return false.
  *         The predefined MOVE command is intercepted and our robot unique code is to be
  *         run instead. The MOVE command mnemonic ID 0x01 is already defined in Configure.h
  *         The next two commands are new and assigned to the first two addresses in the
@@ -33,7 +39,7 @@ const uint8_t CMD_LIST_SIZE = 3;   // we are adding 3 commands (MOVE, BLINK, SER
  * User Defined Command BLINK (0x40) Example
  * A5 01 40 E4
  */
-void blinkHandler (uint8_t cmd, uint8_t param[], uint8_t n)
+bool blinkHandler (uint8_t cmd, uint8_t param[], uint8_t n)
 {
     Serial.write(cmd);                // blink command = 0x40
     Serial.write(n);                  // number of param = 0
@@ -41,13 +47,14 @@ void blinkHandler (uint8_t cmd, uint8_t param[], uint8_t n)
     {
         Serial.write (param[i]);
     }
+    return false;
 }  // blinkHandler
 
 /*
  * Override MOVE (0x01) Command Example
  * A5 05 01 01 80 01 80 A1
  */
-void moveHandler (uint8_t cmd, uint8_t param[], uint8_t n)
+bool moveHandler (uint8_t cmd, uint8_t param[], uint8_t n)
 {
     Serial.write(cmd);             // move command = 0x01
     Serial.write(n);               // number of param = 4
@@ -55,6 +62,7 @@ void moveHandler (uint8_t cmd, uint8_t param[], uint8_t n)
     {
         Serial.write (param[i]);
     }
+    return false;
 }  // moveHandler
 
 /*
@@ -62,7 +70,7 @@ void moveHandler (uint8_t cmd, uint8_t param[], uint8_t n)
  * Rotate servo to 90 degrees
  * A5 02 41 90 76
  */
-void servoHandler (uint8_t cmd, uint8_t param[], uint8_t n)
+bool servoHandler (uint8_t cmd, uint8_t param[], uint8_t n)
 {
     Serial.write(cmd);             // servo command = 0x41
     Serial.write(n);               // number of param = 1
@@ -70,6 +78,7 @@ void servoHandler (uint8_t cmd, uint8_t param[], uint8_t n)
     {
         Serial.write (param[i]);
     }
+    return false;
 }  // servoHandler
 
 /*
