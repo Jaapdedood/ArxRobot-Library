@@ -205,6 +205,10 @@ void ArxRobot::commandProcessor()
                 }
                 // callback JEFF 2019-03-06 end
             }
+            else{
+                // no, call internal command handler
+                telecom.commandHandler();
+            }
         }
         else{
             // no user defined commands, call internal command handler
