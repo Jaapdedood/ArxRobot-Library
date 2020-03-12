@@ -11,7 +11,7 @@
 #define FALSE  0
 #define TRUE   1
 #define DEBUG  FALSE
-#define ECHO_COMMANDS  TRUE
+#define ECHO_COMMANDS  FALSE
 
 #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
 const int LED = 14;  // RXLED LED on 3DoT board, TXLED wired to PD5
@@ -43,8 +43,8 @@ const int BIN2 = 5; // Direction (Analog Pin A2)
 #endif
 
 const int VBATT_PIN = A5; // A5 is an Arduino reserved word
-const int SERVO_11 = 7;
-const int SERVO_13 = 11;
+const int SERVO_A = 7;
+const int SERVO_B = 11;
 const int I2C_SDA = 2;    // 3.3v I2C
 const int I2C_SDL = 3;
 
