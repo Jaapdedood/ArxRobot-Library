@@ -1,22 +1,30 @@
 /*
  *   Custom Servo Command Sample Arduino Code:
- *   Add a slider widget on Arxrobot app to move servo at will
+ *   Add two slider widgets (unsigned int 0 - 255) on Arxrobot app to move servos at will
+ *   Add a third slider widget (unsigned int 1 - 255) to set the speed of the servos
  */
 
 #include <ArxRobot.h>     // instantiated as ArxRobot at end of class header
 
 ArxRobot ArxRobot;       // instantiated as ArxRobot at end of class header
 
-Servo servoA;                   // Instantiate new Servo object
+Servo3DoT servoA;                   // Instantiate new Servo object
+Servo3DoT servoB;
 
 /*
  * Command Example
  * Step 1: Assign new command mnemonics ID numbers
  *         In this example we will be adding just 1 custom command.
  */
-#define SERVO       0x41
+#define SERVOA       0x41
+#define SERVOB       0x42
+#define SERVOSPEED   0x43
 
-const uint8_t CMD_LIST_SIZE = 1;   // we are adding 1 command, Servo
+
+const uint8_t CMD_LIST_SIZE = 3;   // we are adding 3 commands
+
+// Store the servo speed globally
+uint8_t g_servoSpeed = 0;
 
 /*
  * Command Example
@@ -28,32 +36,37 @@ const uint8_t CMD_LIST_SIZE = 1;   // we are adding 1 command, Servo
  * Rotate servo to 90 degrees
  * A5 02 41 90 76
  */
-bool servoHandler (uint8_t cmd, uint8_t param[], uint8_t n)
+bool servoHandlerA (uint8_t cmd, uint8_t param[], uint8_t n)
 {
-    // Serial.writes useful for debugging. Going to comment them out for now.
-    /* Serial.write(cmd);             // servo command = 0x41
-    Serial.write(n);                  // number of param = 1
-    for (int i=0;i<n;i++)             // param = 90 degrees
-    {
-        Serial.write (param[i]);
-    }*/
-
-    /* From servo datasheet: "Position '-90' (1ms pulse), Position '90' (2ms pulse)"
-     *  Using unsigned byte as widget data type in app, send value from phone 0-255
-     *  and map to angle -90 to 90
-     *  Could avoid using map() if data type short is used
-    */
-    servoA.writeMicroseconds(map(param[0], 0, 255, 1000, 2000));
+    /* write(angle), write(angle, speed)
+     *  angle = angle between 0, 180
+     *  speed = 0 -> default speed
+     *  speed = 1 -> minimum speed
+     *  speed = 255 -> maximum speed
+     */
+    servoA.write(param[0], g_servoSpeed);
     
     return false;  // return false since we are not intercepting a predefined command
 }  // servoHandler
 
+
+bool servoHandlerB (uint8_t cmd, uint8_t param[], uint8_t n)
+{
+    servoB.write(param[0], g_servoSpeed);
+    
+    return false;  // return false since we are not intercepting a predefined command
+}  // servoHandler
+
+bool setServoSpeed(uint8_t cmd, uint8_t param[], uint8_t n)
+{
+  g_servoSpeed = param[0];
+}
 /*
  * Command Example
  * Step 2: Register the SERVO commands by linking its ID to the corresponding handler.
  */
 
-ArxRobot::cmdFunc_t onCommand[CMD_LIST_SIZE] = {{SERVO,servoHandler}};
+ArxRobot::cmdFunc_t onCommand[CMD_LIST_SIZE] = {{SERVOA,servoHandlerA}, {SERVOB, servoHandlerB}, {SERVOSPEED, setServoSpeed}};
 
 
 void setup()
@@ -69,9 +82,9 @@ void setup()
   ArxRobot.setOnCommand(onCommand, CMD_LIST_SIZE);
 
   servoA.attach(SERVO_A);         // Attach servo. SERVO_A and SERVO_B are defined in ArxRobot.h
+  servoB.attach(SERVO_B);         // Attach servo. SERVO_A and SERVO_B are defined in ArxRobot.h
 
-  ArxRobot.setCurrentLimit(0);    // set current limit to max current ~= 500mA per motor
-                                  // to set a lower current limit, see https://www.arxterra.com/current-limit/
+  ArxRobot.setCurrentLimit(60);    // Set Current limit to ~500mA
 }
 
 void loop()

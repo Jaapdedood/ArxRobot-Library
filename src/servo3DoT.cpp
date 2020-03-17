@@ -54,6 +54,12 @@
    sequenceStop(); // stop sequence at current position
  */
 
+/*
+  Edited 2020 by Jaap de Dood for ArxRobot library:
+  - #ifs unecessary for 3DoT removed
+*/
+
+
 #include <avr/interrupt.h>
 #include <Arduino.h> // updated from WProgram.h to Arduino.h for Arduino 1.0+, pva
 
@@ -147,18 +153,15 @@ SIGNAL (TIMER3_COMPA_vect)
 
 #elif defined WIRING
 // Interrupt handlers for Wiring
-#if defined(_useTimer3)
 void Timer3Service()
 {
   handle_interrupts(_timer3, &TCNT3, &OCR3A);
 }
 #endif
-#endif
 
 
 static void initISR(timer16_Sequence_t timer)
 {
-#if defined (_useTimer3)
   if(timer == _timer3) {
     TCCR3A = 0;             // normal counting mode
     TCCR3B = _BV(CS31);     // set prescaler of 8
@@ -170,7 +173,6 @@ static void initISR(timer16_Sequence_t timer)
     timerAttach(TIMER3OUTCOMPAREA_INT, Timer3Service);  // for Wiring platform only
 #endif
   }
-#endif
 }
 
 static void finISR(timer16_Sequence_t timer)
@@ -249,7 +251,7 @@ void Servo3DoT::write(int value)
   servos[channel].value = value;
 
   if(value < MIN_PULSE_WIDTH)
-  {  // treat values less than 544 as angles in degrees (valid values in microseconds are handled as microseconds)
+  {  // treat values less than 1000 as angles in degrees (valid values in microseconds are handled as microseconds)
     // updated to use constrain() instead of if(), pva
     value = constrain(value, 0, 180);
     value = map(value, 0, 180, SERVO_MIN(),  SERVO_MAX());
@@ -305,7 +307,7 @@ void Servo3DoT::write(int value, uint8_t speed) {
 	if (speed) {
 
 		if (value < MIN_PULSE_WIDTH) {
-			// treat values less than 544 as angles in degrees (valid values in microseconds are handled as microseconds)
+			// treat values less than 1000 as angles in degrees (valid values in microseconds are handled as microseconds)
 			// updated to use constrain instead of if, pva
 			value = constrain(value, 0, 180);
 			value = map(value, 0, 180, SERVO_MIN(),  SERVO_MAX());
@@ -351,14 +353,6 @@ void Servo3DoT::write(int value, uint8_t speed, bool wait) {
 void Servo3DoT::stop() {
   write(read());
 }
-
-void Servo3DoT::slowmove(int value, uint8_t speed) {
-  // legacy function to support original version of VarSpeedServo
-  write(value, speed);
-}
-
-// End of Extension for slowmove
-
 
 int Servo3DoT::read() // return the value as degrees
 {

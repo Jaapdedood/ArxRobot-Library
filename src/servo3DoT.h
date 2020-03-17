@@ -55,6 +55,11 @@
    sequenceStop(); // stop sequence at current position
  */
 
+/*
+  Edited 2020 by Jaap de Dood for ArxRobot library:
+  - #ifs unecessary for 3DoT removed
+*/
+
 #ifndef servo3DoT_h
 #define servo3DoT_h
 
@@ -83,8 +88,8 @@ typedef enum { _timer1, _Nbr_16timers } timer16_Sequence_t ;
 
 #define servo3DoT_VERSION           2      // software version of this library
 
-#define MIN_PULSE_WIDTH       544     // the shortest pulse sent to a servo
-#define MAX_PULSE_WIDTH      2400     // the longest pulse sent to a servo
+#define MIN_PULSE_WIDTH      1000     // the shortest pulse sent to a servo
+#define MAX_PULSE_WIDTH      2000     // the longest pulse sent to a servo
 #define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
 #define REFRESH_INTERVAL    20000     // minimum time to refresh servos in microseconds
 
