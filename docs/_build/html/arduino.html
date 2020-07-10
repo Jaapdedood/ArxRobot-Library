@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; ArxRobot-Library 3.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RoboPilot" href="robopilot.html" />
+    <link rel="prev" title="The 3DoT Board" href="hardware.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> ArxRobot-Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="hardware.html">Hardware</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-the-3dot-board-to-arduino">Adding the 3DoT Board to Arduino</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-the-3dot-arduino-library">Installing the 3DoT Arduino Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uploading-your-first-sketch">Uploading Your First Sketch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#select-a-com-port">Select a COM port</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="robopilot.html">RoboPilot App</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArxRobot-Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/arduino.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>The Arduino IDE is the most popular beginner method for programming compatible microcontrollers.</p>
+<p>Download the Arduino IDE from the Arduino website:</p>
+<p><a class="reference external" href="https://www.arduino.cc/en/Main/Software">https://www.arduino.cc/en/Main/Software</a></p>
+<div class="section" id="adding-the-3dot-board-to-arduino">
+<h2>Adding the 3DoT Board to Arduino<a class="headerlink" href="#adding-the-3dot-board-to-arduino" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Navigate to File / Preferences</p></li>
+</ol>
+<img alt="preferences pane" src="https://www.arxterra.com/wp-content/uploads/2018/09/Getting-Started-3DoT-IDE-preference-window.png" />
+<ol class="arabic simple" start="2">
+<li><p>Paste the following link into Additional Board Manager URLs:
+<a class="reference external" href="https://arxterra.com/downloads/package_3DoT_index.json">https://arxterra.com/downloads/package_3DoT_index.json</a></p></li>
+<li><p>Close the preferences window and navigate to Tools / Board: / Boards Manager…</p></li>
+</ol>
+<img alt="boards manager" src="https://www.arxterra.com/wp-content/uploads/2018/09/Getting-Started-3DoT-board-manager.png" />
+<ol class="arabic simple" start="4">
+<li><p>Type “3DoT” in the search bar. The board Should show up.</p></li>
+</ol>
+<img alt="3DoT in boards manager" src="https://www.arxterra.com/wp-content/uploads/2018/09/bootloader4.png" />
+<ol class="arabic simple" start="5">
+<li><p>Click inside of the box that contains the text “3DoT by Arxterra” and the “Install” button should appear. Click Install.</p></li>
+</ol>
+<img alt="3DoT installed in boards manager" src="https://www.arxterra.com/wp-content/uploads/2018/09/bootloader5.png" />
+</div>
+<div class="section" id="installing-the-3dot-arduino-library">
+<h2>Installing the 3DoT Arduino Library<a class="headerlink" href="#installing-the-3dot-arduino-library" title="Permalink to this headline">¶</a></h2>
+<p>In the Arduino IDE, navigate to</p>
+<p>Sketch &gt; Include Library &gt; Manage Libraries..</p>
+<p>Search for ArxRobot Library and click install. Done!</p>
+<img alt="ArxRobot Library in Arduino library manager" src="https://www.arxterra.com/wp-content/uploads/2018/04/Screenshot-from-2020-03-24-09-59-41.png" />
+</div>
+<div class="section" id="uploading-your-first-sketch">
+<h2>Uploading Your First Sketch<a class="headerlink" href="#uploading-your-first-sketch" title="Permalink to this headline">¶</a></h2>
+<p>With the Library Installed, navigate to File &gt; Examples &gt; ArxRobot Library and click on ArxRobot_Basic</p>
+<img alt="Basic Example location" src="https://www.arxterra.com/wp-content/uploads/2018/04/examples.png" />
+<p>The ArxRobot_Basic example is a barebones sketch that handles all the background robot operations, including Bluetooth commands. <strong>This means that uploading the Basic example code will make your robot ready to connect to Bluetooth and go!</strong></p>
+<div class="section" id="select-a-com-port">
+<h3>Select a COM port<a class="headerlink" href="#select-a-com-port" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Set the 3DoT to PRG mode and connect your 3DoT to your computer with a USB cable</p></li>
+<li><p>Navigate to Tools &gt; Port and select the port labeled as a 3DoT board.</p></li>
+</ol>
+<img alt="3Dot com port" src="https://www.arxterra.com/wp-content/uploads/2018/04/port.jpg" />
+<p>Then, simply hit the Upload button in the Arduino IDE.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a sketch fails to upload, check the COM port selected again. Your computer may change the COM port number as the board is turned off/on</p>
+</div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Congratulations! You uploaded your first sketch to the 3DoT Board. Click the next button to learn how to send commands to your 3DoT using the RoboPilot app.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="robopilot.html" class="btn btn-neutral float-right" title="RoboPilot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hardware.html" class="btn btn-neutral float-left" title="The 3DoT Board" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gary Hill, Jaap de Dood
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

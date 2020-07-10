@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The 3DoT Board &mdash; ArxRobot-Library 3.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="arduino.html" />
+    <link rel="prev" title="Welcome to the 3DoT Documentation Site!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> ArxRobot-Library
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#battery">Battery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-prg-run-switch">ON - PRG - RUN Switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#motors">Motors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#servos">Servos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-battery-connector">External Battery Connector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shields">Shields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pcb-cad-files">PCB CAD Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="arduino.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="robopilot.html">RoboPilot App</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArxRobot-Library</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>The 3DoT Board</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/hardware.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-3dot-board">
+<h1>The 3DoT Board<a class="headerlink" href="#the-3dot-board" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="battery">
+<h2>Battery<a class="headerlink" href="#battery" title="Permalink to this headline">¶</a></h2>
+<p>When you first get your board, the battery will be at an ~80% charge, or about 3.7V. Plug in a usb cord connected to a computer or USB wall charger to charge the battery. The 3DoT Board will automatically stop charging at 4.2V, the maximum safe charge voltage.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Do not let the battery discharge below 3.2V, as this could cause permanent damage to the battery’s chemistry and significantly reduce battery life.</p>
+</div>
+</div>
+<div class="section" id="on-prg-run-switch">
+<h2>ON - PRG - RUN Switch<a class="headerlink" href="#on-prg-run-switch" title="Permalink to this headline">¶</a></h2>
+<p>Next to the USB port, the 3-position switch on the 3DoT board is designed to allow you to set the board to programming mode, take your time programming the board, and then switch the board to ON when you are ready to run the code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to go from ON to programming the board, you must first turn the board OFF, then switch back to PRG.</p>
+</div>
+<div class="figure align-center" id="id1">
+<img alt="https://www.arxterra.com/wp-content/uploads/2018/04/Getting-Started-SW-square-e1572375117922.png" src="https://www.arxterra.com/wp-content/uploads/2018/04/Getting-Started-SW-square-e1572375117922.png" />
+<p class="caption"><span class="caption-text">ON - PRG -OFF Switch</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="motors">
+<h2>Motors<a class="headerlink" href="#motors" title="Permalink to this headline">¶</a></h2>
+<p>The 3DoT motor driver supplies 0-5V to the on-board motor connectors. Any 3-6V motors will work, as long as they are not too large (no-load current above ~200mA).</p>
+<p>We highly recommend <a class="reference external" href="https://www.humansforrobots.com/product/micro-metal-gear-motor-6v-200rpm/">micro-metal gear motors</a>.</p>
+</div>
+<div class="section" id="servos">
+<h2>Servos<a class="headerlink" href="#servos" title="Permalink to this headline">¶</a></h2>
+<p>Servos on the 3DoT are powered from the same VM net as the motor drivers. Again, any 3-6V servos should work, but be careful with amount of current that can be drawn from the on-board battery.</p>
+<p>We recommend any kind of “micro-servo”.</p>
+</div>
+<div class="section" id="external-battery-connector">
+<h2>External Battery Connector<a class="headerlink" href="#external-battery-connector" title="Permalink to this headline">¶</a></h2>
+<p>Depending on the motors and servos used, the amount of torque required from them, current drawn by shields etc. you may hit the 3DoT battery’s 2A limit. You can alleviate this problem by desoldering the marked solder bridge on the bottom of the board and connecting an external battery or other power supply (4V - 18V) to the external battery connector.This will allow the internal electronics of the board to run from the on-board battery, and supply your battery’s power directly to the “VM” net, which is accessible from the top header, and powers the motor driver.</p>
+</div>
+<div class="section" id="shields">
+<h2>Shields<a class="headerlink" href="#shields" title="Permalink to this headline">¶</a></h2>
+<p>Shields add functionality to your 3DoT board, such as extra motor connectors or sensors, and are available to purchase on the <a class="reference external" href="https://www.humansforrobots.com/store/">Humans for Robots store</a>, or your can make your own.</p>
+<p>To make your own, try free PCB CAD software such as KiCad or EAGLE and use the 3DoT PCB CAD files below as a reference.</p>
+</div>
+<div class="section" id="pcb-cad-files">
+<h2>PCB CAD Files<a class="headerlink" href="#pcb-cad-files" title="Permalink to this headline">¶</a></h2>
+<p>Updated files to be released soon.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="arduino.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to the 3DoT Documentation Site!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Gary Hill, Jaap de Dood
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
