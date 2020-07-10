@@ -88,6 +88,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">RoboPilot App</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#connecting-to-your-robot">Connecting to Your Robot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reverse-motor-directions">Reverse Motor Directions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-custom-commands">Adding Custom Commands</a></li>
 </ul>
 </li>
@@ -173,8 +174,59 @@
 <p>Click “Connect”.</p>
 <p>Once connected, try out the default controls to drive your robot’s motors!</p>
 </div>
+<div class="section" id="reverse-motor-directions">
+<h2>Reverse Motor Directions<a class="headerlink" href="#reverse-motor-directions" title="Permalink to this headline">¶</a></h2>
+<p>Click the “Reverse Motors” button from any of the controls screens to reverse any of the motor directions, in case your robot is running backwards or rotating when you try to drive it forward.</p>
+<p>The toggles in this menu alter only the direction data byte in the command packet sent to the robot.</p>
+</div>
 <div class="section" id="adding-custom-commands">
 <h2>Adding Custom Commands<a class="headerlink" href="#adding-custom-commands" title="Permalink to this headline">¶</a></h2>
+<p>Click the “Add Command” button from any of the controls screens and choose the type of command you wish to send.</p>
+<p>See the <a class="reference external" href="#">ArxRobot Library Reference</a> <a href="#id1"><span class="problematic" id="id2">`</span></a>for info on how command packets are structured.</p>
+<p>The data packet is constructed as follows for each command:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 21%" />
+<col style="width: 8%" />
+<col style="width: 21%" />
+<col style="width: 34%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command Type</p></th>
+<th class="head"><p>Data size (Bytes)</p></th>
+<th class="head"><p>Format</p></th>
+<th class="head"><p>Example</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Button</p></td>
+<td><p>0</p></td>
+<td></td>
+<td></td>
+<td><p>No data, just command sent</p></td>
+</tr>
+<tr class="row-odd"><td><p>Toggle</p></td>
+<td><p>1</p></td>
+<td><p>00/01</p></td>
+<td><p>01</p></td>
+<td><p>Boolean</p></td>
+</tr>
+<tr class="row-even"><td><p>Slider</p></td>
+<td><p>1</p></td>
+<td><p>0-125</p></td>
+<td><p>5F</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Text</p></td>
+<td><p>maximum 20</p></td>
+<td><p>ASCII</p></td>
+<td><p>68 65 6c 6c 6f</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 

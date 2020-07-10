@@ -24,5 +24,27 @@ Click "Connect".
    
 Once connected, try out the default controls to drive your robot's motors!
 
+Reverse Motor Directions
+------------------------
+
+Click the "Reverse Motors" button from any of the controls screens to reverse any of the motor directions, in case your robot is running backwards or rotating when you try to drive it forward.
+
+The toggles in this menu alter only the direction data byte in the command packet sent to the robot.
+
 Adding Custom Commands
 ----------------------
+
+Click the "Add Command" button from any of the controls screens and choose the type of command you wish to send.
+
+See the `ArxRobot Library Reference <#>`__ `for info on how command packets are structured.
+
+The data packet is constructed as follows for each command:
+
+=============  =================  ======  =================  ===========================
+Command Type   Data size (Bytes)  Format  Example             Notes
+=============  =================  ======  =================  ===========================
+Button              0                                         No data, just command sent
+Toggle              1              00/01   01                 Boolean
+Slider              1              0-125   5F
+Text            maximum 20         ASCII   68 65 6c 6c 6f  
+=============  =================  ======  =================  ===========================
