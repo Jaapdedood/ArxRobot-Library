@@ -1,5 +1,9 @@
 The 3DoT Board
 ==============
+Pinout
+------
+.. figure:: https://www.arxterra.com/wp-content/uploads/2018/09/3DoTPinout-1030x746.jpg
+    :align: center
 
 Battery
 -------

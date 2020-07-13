@@ -36,9 +36,9 @@ Adding Custom Commands
 
 Click the "Add Command" button from any of the controls screens and choose the type of command you wish to send.
 
-See the `ArxRobot Library Reference <#>`__ `for info on how command packets are structured.
+See the `Command Packets <#>`__ for info on how command packets are structured.
 
-The data packet is constructed as follows for each command:
+The data packet is constructed by the app as follows for each command:
 
 =============  =================  ======  =================  ===========================
 Command Type   Data size (Bytes)  Format  Example             Notes
@@ -48,3 +48,14 @@ Toggle              1              00/01   01                 Boolean
 Slider              1              0-125   5F
 Text            maximum 20         ASCII   68 65 6c 6c 6f  
 =============  =================  ======  =================  ===========================
+
+See the `ArxRobot Library Reference <#>`__ to learn how to program what your robot does with each command.
+
+Saving and Loading Commands
+---------------------------
+
+Once you have constructed your perfect Robot UI, you can save it by clicking "Save Commands". When ever you want, you can then load them again by clicking "Load Commands". The D-pad and tank control screens save their commands in separate files and won't interfere with each other.
+
+Support for saving multiple command layouts for each screen is a planned feature.
+
+

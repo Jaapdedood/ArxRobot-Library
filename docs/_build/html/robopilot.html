@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#connecting-to-your-robot">Connecting to Your Robot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reverse-motor-directions">Reverse Motor Directions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-custom-commands">Adding Custom Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-and-loading-commands">Saving and Loading Commands</a></li>
 </ul>
 </li>
 </ul>
@@ -182,8 +183,8 @@
 <div class="section" id="adding-custom-commands">
 <h2>Adding Custom Commands<a class="headerlink" href="#adding-custom-commands" title="Permalink to this headline">¶</a></h2>
 <p>Click the “Add Command” button from any of the controls screens and choose the type of command you wish to send.</p>
-<p>See the <a class="reference external" href="#">ArxRobot Library Reference</a> <a href="#id1"><span class="problematic" id="id2">`</span></a>for info on how command packets are structured.</p>
-<p>The data packet is constructed as follows for each command:</p>
+<p>See the <a class="reference external" href="#">Command Packets</a> for info on how command packets are structured.</p>
+<p>The data packet is constructed by the app as follows for each command:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 16%" />
@@ -227,6 +228,12 @@
 </tr>
 </tbody>
 </table>
+<p>See the <a class="reference external" href="#">ArxRobot Library Reference</a> to learn how to program what your robot does with each command.</p>
+</div>
+<div class="section" id="saving-and-loading-commands">
+<h2>Saving and Loading Commands<a class="headerlink" href="#saving-and-loading-commands" title="Permalink to this headline">¶</a></h2>
+<p>Once you have constructed your perfect Robot UI, you can save it by clicking “Save Commands”. When ever you want, you can then load them again by clicking “Load Commands”. The D-pad and tank control screens save their commands in separate files and won’t interfere with each other.</p>
+<p>Support for saving multiple command layouts for each screen is a planned feature.</p>
 </div>
 </div>
 
