@@ -10,16 +10,15 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+#import os
+#import sys
 import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'ArxRobot-Library'
-copyright = '2020, Gary Hill, Jaap de Dood'
-author = 'Gary Hill, Jaap de Dood'
+project = '3DoT Board'
+copyright = 'CC BY 4.0'
+author = 'Jaap de Dood'
 
 # The full version, including alpha/beta/rc tags
 release = '3.1'

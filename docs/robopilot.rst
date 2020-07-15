@@ -36,8 +36,6 @@ Adding Custom Commands
 
 Click the "Add Command" button from any of the controls screens and choose the type of command you wish to send.
 
-See the `Command Packets <#>`__ for info on how command packets are structured.
-
 The data packet is constructed by the app as follows for each command:
 
 =============  =================  ======  =================  ===========================
@@ -49,7 +47,7 @@ Slider              1              0-125   5F
 Text            maximum 20         ASCII   68 65 6c 6c 6f  
 =============  =================  ======  =================  ===========================
 
-See the `ArxRobot Library Reference <#>`__ to learn how to program what your robot does with each command.
+You only need to worry about this once you start programming the robot's responses to the commands, covered on the next page: `ArxRobot Library Reference <#>`__.  
 
 Saving and Loading Commands
 ---------------------------

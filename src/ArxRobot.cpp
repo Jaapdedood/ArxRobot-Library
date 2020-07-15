@@ -46,7 +46,6 @@ ArxRobot::ArxRobot()  // based on Firmata.cpp constructor
    * firmwareVersionVector = 0;
    * systemReset();
    */
-  loopCounter = 0;
 }
 
 /*
@@ -100,14 +99,6 @@ void ArxRobot::loop()
     if(Serial.available())commandProcessor();
 #endif
     telecom.sendData();
-
-    // Check whether battery voltage is below 3.3V every 255 loops - loopcounter is an 8-bit int
-    if(loopCounter == 255){
-        if(readBatteryVoltage() < 745){
-            alertFatalError();
-        }
-    }
-    loopCounter++;
 }
 
 /*
