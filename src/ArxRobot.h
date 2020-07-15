@@ -1,6 +1,5 @@
 /*
   ArxRobot.h - Base Class
-  Created by Gary Hill, August 13, 2016.
 */
 
 #ifndef ArxRobot_h    // The #define Guard
@@ -12,6 +11,7 @@
 #include "TelecomClass.h"  // DRV8848 Motor Driver
 #include "servo3DoT.h"
 #include "twi.h"
+#include "Configure.h"
 
 /*
  *  header .h class member definitions
@@ -24,8 +24,7 @@ public:
     ArxRobot();
 
     // Data type and structure descriptions
-    //typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
-    typedef bool (*fptr_t) (const uint8_t, uint8_t *, uint8_t); // JEFF 2019-03-06 changed from void to bool
+    typedef void (*fptr_t) (const uint8_t, uint8_t *, uint8_t);
     // Now that we have a type which can point to a function (fptr), we can make an instance
     // of that type (in other words, a variable that points to a function)
     // fptr_t anotherFunction;
@@ -38,22 +37,25 @@ public:
     // Public class 'methods'
     void begin();
     void loop();
-    void setOnCommand(cmdFunc_t*,uint8_t);
-    void setCurrentLimit(uint8_t);
-    uint16_t readBatteryVoltage(); // TODO move this to appropriate class. Placed here since Fuelgauge class may be rebuilt soon.
+    void addCustomCommand(fptr_t, uint8_t);
+    // void addToBuiltInCommand(uint8_t, fptr_t);
+    void replaceBuiltInCommand(uint8_t, fptr_t);
+
+    uint16_t readBatteryVoltage(); // TODO move these to appropriate class. Placed here since Fuelgauge class may be rebuilt soon.
     void alertFatalError();        // TODO Same as readBatteryVoltage, + incorporate telecom data to app
+
+    void debugFunction();
 
 private:
     // Private class 'methods'
     void _clear_MCUCR_JTD_bit();
     void commandProcessor();
-    uint8_t search_onCommand(uint8_t);
+
+
 
   // Private class 'properties'
-  static cmdFunc_t* _onCommand;
-  uint8_t _arraysize;
-  uint8_t loopCounter;
-
+    cmdFunc_t _customCommands[MAX_CUSTOM_COMMANDS(CUSTOM_COMMANDS_START)]; //0x40 to 0x5F = 31 max commands
+    cmdFunc_t _interceptCommands[BUILTIN_COMMANDS_COUNT];
 };
 
 // create an instance of ArxRobot class

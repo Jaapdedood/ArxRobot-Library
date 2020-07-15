@@ -1,17 +1,9 @@
 /*
   ArxRobot.cpp - ArxRobot Base Class
-  Created by Gary Hill, August 13, 2016
-  Edited by Jaap de Dood & Jeff Gomes, March 2019
 */
 
 #include "Arduino.h"       // Arduino library files
-#include <avr/wdt.h>       // Standard C library for AVR-GCC avr-libc wdt.h
-#include "TelecomClass.h"  // DRV8848 Motor Driver
 #include "ArxRobot.h"
-#include "servo3DoT.h"
-#include "twi.h"
-#include <avr/sleep.h>
-
 
 // robotControl model included an extern preprocessor directive.
 
@@ -29,7 +21,9 @@
  * Instantiate Objects
  *============================================================================*/
 
-// create an instance of a packet to send the value from the Output Compare Register Timer 4D wired to PWM signal to Motor B
+/* create an instance of a packet to send the value from the 
+ * Output Compare Register Timer 4D wired to PWM signal to Motor B 
+ */
 TelecomClass telecom;
 
 /*
@@ -37,24 +31,10 @@ TelecomClass telecom;
  */
 
 // Constructor
-ArxRobot::ArxRobot()  // based on Firmata.cpp constructor
+ArxRobot::ArxRobot()
 {
-  /*
-   * Firmata (.h and .cpp) have implemented version control ****
-   * TODO Port to 3DoT
-   * firmwareVersionCount = 0;
-   * firmwareVersionVector = 0;
-   * systemReset();
-   */
-}
 
-/*
- * See data type and structure specifier in header for declaration of cmdFunc_t
- * as a 2 dimensional array of commands and associated user defined
- * subroutines.
- * Set _onCommand property a pointer type cmdFunc_t* to NULL
- */
-ArxRobot::cmdFunc_t* ArxRobot::_onCommand = NULL;
+}
 
 /*********************
  *  Public Methods   *
@@ -65,75 +45,51 @@ ArxRobot::cmdFunc_t* ArxRobot::_onCommand = NULL;
  */
 void ArxRobot::begin()
 {
-  wdt_disable();               // the watchdog timer remains active even after a system reset (except a power-on condition)
-                               // hopefully Arduino bootloader does this, because by now it is probably to late to prevent
-                               // an eternal loop of time-out resets.
+    wdt_disable();    // the watchdog timer remains active even after a system reset
+                      // (except a power-on condition) hopefully Arduino bootloader does this,
+                      // because by now it is probably to late to prevent
+                      // an eternal loop of time-out resets.
 
-#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
-  //Code in here will only be compiled if an Arduino Leonardo is used.
-      _clear_MCUCR_JTD_bit();  // Disables JTAG interface
-      Serial1.begin(9600);
-      /* Jaap: Intended for use with usb connection.
-       * Prevents app from being able to connect.
-       * Temporarily commented out. Remove?
-       */
-      //while (!Serial) {}       // wait for USB serial port to connect. Needed for Leonardo only
-#endif
+    _clear_MCUCR_JTD_bit();  // Disables JTAG interface
+    Serial1.begin(9600);
 
-    /*There used to be code here to write 0 to pwma, pwmb. Probably unecessary so removed. - Jaap*/
+    pinMode(LED, OUTPUT);        // initialize LED indicator as an output.
 
-      pinMode(LED, OUTPUT);        // initialize LED indicator as an output.
-
-      telecom.begin();
+    telecom.begin();
 }
 
 void ArxRobot::loop()
 {
-  #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
-  // note: Leonardo does not support serialEvent() handler
-    //if(Serial1.available())commandProcessor();
-    if(Serial1.available()){
+    if(Serial1.available())
+    {
         commandProcessor();
     }
-#else
-    if(Serial.available())commandProcessor();
-#endif
+
     telecom.sendData();
 }
 
 /*
  * assign list of commands defined by the user
  */
-void ArxRobot::setOnCommand(cmdFunc_t* functions,uint8_t arraysize)
+
+void ArxRobot::addCustomCommand(fptr_t function, uint8_t commandID)
 {
-  _onCommand = functions;
-  _arraysize = arraysize;
+    _customCommands[commandID].funct = function;
+    _customCommands[commandID].cmd = commandID;
 }
 
-void ArxRobot::setCurrentLimit(uint8_t steps)
+void ArxRobot::replaceBuiltInCommand(uint8_t commandID, fptr_t function)
 {
-    if(steps > 128)
-    {
-        Serial.println("CurrentLimit steps should be < 128. Current limit not set.");
-    }
-    else
-    {
-        TWIInit(); // Sets I2C frequency
-
-        TWIStart(); // Start transmission
-
-        TWIWrite(SLA_W); // Address MCP4017
-
-        TWIWrite(steps); // Write desired resistance value to MCP4017
-
-        TWIStop();
-    }
+    _interceptCommands[commandID].funct = function;
+    _interceptCommands[commandID].cmd = commandID;
 }
 
-uint16_t ArxRobot::readBatteryVoltage(){
+uint16_t ArxRobot::readBatteryVoltage()
+{
     pinMode(A5, INPUT);
     uint16_t totalVoltage = 0;
-    for(int i=0;i<7;i++){
+    for(int i=0;i<50;i++)
+    {
       uint16_t VBATT = analogRead(A5);
       totalVoltage = totalVoltage + VBATT;    
     }
@@ -141,31 +97,9 @@ uint16_t ArxRobot::readBatteryVoltage(){
     return averageVoltage;
 }
 
-void ArxRobot::alertFatalError(){
-    pinMode(17, OUTPUT);
-    pinMode(13, OUTPUT);
-    // TX/RX LEDs
-    pinMode(0, OUTPUT);
-    pinMode(1, OUTPUT);
-
-
-    // Blink like mad
-    for(int i = 0;i<100;i++){
-        digitalWrite(17,HIGH);
-        digitalWrite(0, LOW);
-        digitalWrite(13, HIGH);
-        digitalWrite(1, LOW);
-        delay(100);
-        digitalWrite(17,LOW);
-        digitalWrite(0, HIGH);
-        digitalWrite(13, LOW);
-        digitalWrite(1, HIGH);
-        delay(100);
-    }
-
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_enable();
-    sleep_mode();
+void ArxRobot::alertFatalError()
+{
+    // TODO: something reasonable here
 }
 
 /*********************
@@ -175,50 +109,47 @@ void ArxRobot::alertFatalError(){
 void ArxRobot::commandProcessor()
 {
     uint8_t cmd = telecom.commandDecoder();
-    if (cmd != 0){
+
+    // If a command received
+    if (cmd != 0)
+    {
         // reset watchdog timer
         wdt_reset();    // included in avr/wdt.h library, assembly instruction wdr
 
-        // determine nature of command (internal or user defined)
-        // has user defined any commands?
-        if (_arraysize > 0){
-            // yes, is this a user defined command?
-            uint8_t index = search_onCommand(cmd);
-            if (index != 0xFF){
-                // yes, call user defined command handler
+        // Is command a built-in command?
+        if(cmd < CUSTOM_COMMANDS_START)
+        {
+            // Does the user want to intercept command?
+            if(_interceptCommands[cmd].funct != NULL)
+            {
+                //yes, run user command
                 uint8_t  n = telecom.getLength();     // number of arguments
                 uint8_t *d = telecom.getData();       // points to arguments in data array
-                // _onCommand[index].funct (cmd, d, n)   // callback original
-                // callback JEFF 2019-03-06 start
-                if (_onCommand[index].funct (cmd, d, n)) {
-                    // returned true, so also look for internal handler
-                    telecom.commandHandler();
-                }
-                // callback JEFF 2019-03-06 end
+                _interceptCommands[cmd].funct (cmd, d, n);
             }
-            else{
-                // no, call internal command handler
+            else
+            {
+                //no, run built in command
                 telecom.commandHandler();
             }
+            
         }
-        else{
-            // no user defined commands, call internal command handler
-            telecom.commandHandler();
+        else
+        {
+                // If custom command exists
+                if(_customCommands[cmd-CUSTOM_COMMANDS_START].funct != NULL)
+                {
+                    //run command
+                    uint8_t  n = telecom.getLength();     // number of arguments
+                    uint8_t *d = telecom.getData();       // points to arguments in data array
+                    _customCommands[cmd-64].funct (cmd, d, n);
+                }
+                else
+                {
+                    // TODO: Send error to tell app user to add command matching ID
+                }
         }
     }
-}
-
-uint8_t ArxRobot::search_onCommand(uint8_t command_received)
-{
-  uint8_t found_here = 0xFF;          // returns 0xFF if not found
-  for (uint8_t i=0; i < _arraysize; i++)
-  {
-      if (command_received == _onCommand[i].cmd) {
-          found_here = i;
-          break;
-      }
-  }
-  return found_here;
 }
 
 /* Set JTD bit in MCUCR Register to False
@@ -232,15 +163,12 @@ void ArxRobot::_clear_MCUCR_JTD_bit()
   asm("out 0x35, r24");
 }
 
-/* Notes
-1. The callback construction is modeled on the MIDI library .h file and
-   MIDI_Callbacks.ino example.
-
-2. Lines limit is 80 characters as defined by Google C++ Style Guide
-0         1          2        3         4         5         6         7        7
-01234567890123456789012345678901234567890123456789012345678901234567890123456789
-
-3. How to tell compiler that name will be defined before linker is run.
-extern const uint8_t CMD_LIST_SIZE;
-
-*/
+void ArxRobot::debugFunction()
+{
+    Serial.println(_customCommands[0].cmd);
+    Serial.println(_customCommands[1].cmd);
+    Serial.println(_customCommands[2].cmd);
+    Serial.println(_customCommands[0].funct == NULL);
+    Serial.println(_customCommands[1].funct == NULL);
+    Serial.println(_customCommands[2].funct == NULL);
+}

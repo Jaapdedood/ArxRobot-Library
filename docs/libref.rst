@@ -22,6 +22,10 @@ The "ArxRobot_Basic" sketch demonstrates this basic functionality.
 
 To add functionality to a robot, users can also add their own `Custom Commands`_ . The code to be executed by the command is written in the user's Arduino sketch, and handled by the ArxRobot Library and ArxRobot.loop(). 
 
+Basic Usage
+-----------
+
+As mentioned in `Getting Started`__, to control your robot using the RoboPilot's controls, simply upload the ArxRobot_Basic example and connect using the app.
 
 Data Packets
 ------------

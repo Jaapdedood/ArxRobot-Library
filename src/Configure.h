@@ -85,6 +85,9 @@ const int I2C_SDL = 3;
 #define WAYPOINT_DELETE      0x1A   // 0001101   0     1
 #define WAYPOINT_VIEW_CLICK  0x1B   // 0001101   1     4
 
+#define BUILTIN_COMMANDS_COUNT 0x1B // change me when new built-in commands are added
+#define CUSTOM_COMMANDS_START 0x40
+#define MAX_CUSTOM_COMMANDS(n) (0x5F - (n))
 // note(s)
 // [1] See Waypoint Coordinates class in "Communication between Arduino,
 //     Phone, and Control Panel" Google Drive Spreadsheet.

@@ -76,10 +76,6 @@ void TelecomClass::sendData()
   batteryPacket.sendSensor(percentage);       // send a 16-bit unsigned word to the control panel.
   if (percentage == 0) {                      // battery has been depleted
       motor_driver.motors_safe();               // Need to actually sleep the rover
-#if DEBUG                                 // Message repeats until unit is turned off and battery charged
-      Serial.print("Battery Undervoltage = ");
-      Serial.println(batteryGauge.getVoltage()); // data type is float
-    #endif
   }
 }
 
@@ -107,15 +103,9 @@ uint8_t TelecomClass::commandDecoder()
   _command = 0;                // processing command
 
   // Step through FSM until packet received.
-  #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega16U4__)
   while(Serial1.available()) // note: Leonardo does not support serialEvent() handler
   {
     _data[i] = Serial1.read();
-  #else
-  while(Serial.available())
-  {
-    _data[i] = Serial.read();
-  #endif
 
     // FSM implementation
     // Mealy and Moore output decoder section
@@ -306,11 +296,6 @@ void TelecomClass::commandHandler()
   else if (_command == COMM_SETUP){
     watchdogTimer.watchdogSetup(_data[3]);                // set wdt mode and prescaler
     telecomPacket.sendPacket(PONG_ID);                    // ArxRobot app expects a pong response - JEFF 2020-03-09
-
-    #if DEBUG
-    Serial.print("wdt prescaler set to: ");
-    Serial.println(_data[3], HEX);
-    #endif
   }
 }
 
@@ -321,10 +306,6 @@ void TelecomClass::commandHandler()
 void TelecomClass::throwError(uint16_t err){
   _command = 0;                                  // processing complete with error
   telecomPacket.sendPacket(EXCEPTION_ID,err);    // send 0x0E plus 16-bit FSM error code
-  #if DEBUG
-  Serial.print("Command decoder exception 0x0"); // Send duplicate data as text to
-  Serial.println(err,HEX);                       // USB=>Arduino IDE Serial Monitor.
-  #endif
 }
 
 // **** TODO convert to properties
@@ -336,14 +317,4 @@ void TelecomClass::commandEcho(uint8_t * data, uint8_t N)
     data_out[i-2] = data[i];  //               [ID, Data]
   }
   telecomPacket.sendPacket(COMMAND_ECHO_ID, data_out, N);  // send byte array packet over USB or bluetooth
-
-  #if DEBUG
-  Serial.print("rover received command: ");  // Send duplicate data as text to
-  Serial.print(data[2], HEX);                // USB=>Arduino IDE Serial Monitor.
-  for(int i=3; i<N+2; i++){
-  Serial.print(", ");
-  Serial.print(data[i], HEX);
-  }
-  Serial.println();
-  #endif
 }
