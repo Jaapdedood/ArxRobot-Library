@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ArxRobot-Library &mdash; 3DoT Board 3.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configure.h" href="configure.html" />
+    <link rel="prev" title="RoboPilot" href="../robopilot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> 3DoT Board
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../hardware.html">Hardware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arduino.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../robopilot.html">RoboPilot App</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ArxRobot Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-sketches">Example Sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-custom-commands">Writing Custom Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-custom-commands">Adding Custom Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-commands">Built-In Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#replacing-built-in-commands">Replacing Built-In Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-packets">Data Packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-commands">Custom Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#library-reference">Library Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configure.html">Configure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arxrobot.html">ArxRobot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="motor.html">Motor/Motor Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet.html">Packet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="servo.html">Servo3DoT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="telecom.html">Telecom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">3DoT Board</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>ArxRobot-Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/libref/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="arxrobot-library">
+<h1>ArxRobot-Library<a class="headerlink" href="#arxrobot-library" title="Permalink to this headline">¶</a></h1>
+<p>Make sure you have completed the <a class="reference external" href="../arduino.html">Getting Started</a> section before diving into this section.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The ArxRobot library allows the 3DoT board to communicate over bluetooth using <strong>command</strong> and <strong>telemetry</strong> <a class="reference internal" href="#data-packets">Data Packets</a> with checksum.</p>
+<p><strong>Commands</strong> are, as the name suggests, instructions for the robot or app to do something. <strong>Telemetry</strong> is simply data, such as the battery voltage that is communicated.</p>
+<p>The library contains a list of <a class="reference internal" href="#built-in-commands">Built-In Commands</a> and telemetry labels, listed in Configure.h, such as the MOVE command, which is command number 01.</p>
+<p>The function of these commands are defined in the library. For example, when the MOVE command is received, motors connected to the 3DoT are driven at the given speed and direction.</p>
+</div>
+<div class="section" id="example-sketches">
+<h2>Example Sketches<a class="headerlink" href="#example-sketches" title="Permalink to this headline">¶</a></h2>
+<p>In the Arduino IDE, navigate to <cite>File &gt; Examples &gt; ArxRobot_Library</cite> to open the included example sketches.</p>
+<p><strong>ArxRobot_Basic</strong> contains all the code needed to control a robot using the RoboPilot app.</p>
+<p><strong>ArxRobot_CustomCommands</strong> implements the addCustomCommand() and replaceBuiltInCommand() methods explained below to make user commands work with the RoboPilot app.</p>
+<p><strong>ArxRobot_ledPWM</strong> shows a simple custom command example, using a slider to adjust the brightness of an LED</p>
+</div>
+<div class="section" id="writing-custom-commands">
+<h2>Writing Custom Commands<a class="headerlink" href="#writing-custom-commands" title="Permalink to this headline">¶</a></h2>
+<p>To get started making a custom command, write a function in your arduino sketch with the following template:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">myCommand</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">param</span><span class="p">[],</span> <span class="kt">uint8_t</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="c1">// Your code here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can change myCommand to the name of your choosing, e.g. blinkLED, but the type must always be <strong>void</strong> and parameters must follow the <strong>(uint8_t cmd, uint8_t param[], uint8_t n)</strong> format.</p>
+<p>You can use these parameters in your function.</p>
+<dl class="cpp function">
+<dt id="_CPPv49myCommand7uint8_tA_7uint8_t7uint8_t">
+<span id="_CPPv39myCommand7uint8_tA_7uint8_t7uint8_t"></span><span id="_CPPv29myCommand7uint8_tA_7uint8_t7uint8_t"></span><span id="myCommand__uint8_t.uint8_tA.uint8_t"></span>void <code class="sig-name descname">myCommand</code><span class="sig-paren">(</span>uint8_t <em>cmd</em>, uint8_t <em>param</em>[], uint8_t <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49myCommand7uint8_tA_7uint8_t7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd</strong> – The command ID of your custom command</p></li>
+<li><p><strong>param[]</strong> – Command data sent by the app</p></li>
+<li><p><strong>n</strong> – Number of bytes of command data received in param[]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>For example, in the ArxRobot_ledPWM example we adjust the brightness of an LED using the slider value sent from the RoboPilot app as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">ledPWM</span> <span class="p">(</span><span class="kt">uint8_t</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">param</span><span class="p">[],</span> <span class="kt">uint8_t</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// param[0] is the first byte of command data received from the app,</span>
+    <span class="c1">// which holds the slider value</span>
+    <span class="n">analogWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-custom-commands">
+<h2>Adding Custom Commands<a class="headerlink" href="#adding-custom-commands" title="Permalink to this headline">¶</a></h2>
+<p>Next, to add the function as a custom command that the app can call, simply call the following function in the setup portion of your code:</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8ArxRobot16addCustomCommandE6fptr_t7uint8_t">
+<span id="_CPPv3N8ArxRobot16addCustomCommandE6fptr_t7uint8_t"></span><span id="_CPPv2N8ArxRobot16addCustomCommandE6fptr_t7uint8_t"></span><span id="ArxRobot::addCustomCommand__fptr_t.uint8_t"></span>void <code class="sig-prename descclassname">ArxRobot<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">addCustomCommand</code><span class="sig-paren">(</span>fptr_t <em>function</em>, uint8_t <em>commandID</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8ArxRobot16addCustomCommandE6fptr_t7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function</strong> – Name of function to add to custom commands list</p></li>
+<li><p><strong>param[]</strong> – Command ID to associate with function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>For example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">ArxRobot</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+    <span class="n">ArxRobot</span><span class="p">.</span><span class="n">addCustomCommand</span><span class="p">(</span><span class="n">myCommand</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">ArxRobot</span><span class="p">.</span><span class="n">addCustomCommand</span><span class="p">(</span><span class="n">myOtherCommand</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the setup() of this sketch, we are adding “myCommand” and “myOtherCommand” as two custom commands, with IDs 0 and 1.</p>
+<p>If you now create a custom command in the RoboPilot app with ID 0, it will call myCommand, and a command with ID 1 will call myOtherCommand.</p>
+</div>
+<div class="section" id="built-in-commands">
+<h2>Built-In Commands<a class="headerlink" href="#built-in-commands" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="replacing-built-in-commands">
+<h2>Replacing Built-In Commands<a class="headerlink" href="#replacing-built-in-commands" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="data-packets">
+<h2>Data Packets<a class="headerlink" href="#data-packets" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="custom-commands">
+<h2>Custom Commands<a class="headerlink" href="#custom-commands" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="library-reference">
+<h2>Library Reference<a class="headerlink" href="#library-reference" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arxrobot.html">ArxRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motor.html">Motor/Motor Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="servo.html">Servo3DoT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="telecom.html">Telecom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="watchdog.html">Watchdog</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configure.html" class="btn btn-neutral float-right" title="Configure.h" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../robopilot.html" class="btn btn-neutral float-left" title="RoboPilot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright CC BY 4.0
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

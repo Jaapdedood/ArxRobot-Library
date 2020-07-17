@@ -13,4 +13,4 @@ Welcome to the 3DoT Documentation Site!
    Hardware <hardware>
    Getting Started <arduino>
    RoboPilot App <robopilot>
-   Library Refernce <libref>
+   ArxRobot Library <libref/index>

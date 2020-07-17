@@ -1,5 +1,5 @@
-ArxRobot-Library Reference
-==========================
+ArxRobot-Library
+================
 
 Overview
 ------------------
@@ -22,6 +22,12 @@ The "ArxRobot_Basic" sketch demonstrates this basic functionality.
 
 To add functionality to a robot, users can also add their own `Custom Commands`_ . The code to be executed by the command is written in the user's Arduino sketch, and handled by the ArxRobot Library and ArxRobot.loop(). 
 
+Basic Usage / Using Custom Commands
+------------------------------------
+
+As mentioned in `Getting Started`__, to control your robot using the RoboPilot's controls, simply upload the ArxRobot_Basic example and connect using the app.
+
+To add a custom command, simply write a function in the arduino sketch 
 
 Data Packets
 ------------
@@ -37,3 +43,17 @@ Custom Commands
 ---------------
 
 lorem ipsum dolor
+
+Library Reference
+-----------------
+
+.. toctree::
+   :maxdepth: 1
+	      Configure <configure>
+	      ArxRobot <arxRobot>
+	      Motor/Motor Driver <motor>
+	      Packet <packet>
+	      Servo3DoT <servo>
+	      Telecom <telecom>
+	      Watchdog <watchdog>
+      
