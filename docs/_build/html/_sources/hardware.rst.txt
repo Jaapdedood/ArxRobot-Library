@@ -55,7 +55,13 @@ Shields add functionality to your 3DoT board, such as extra motor connectors or 
 
 To make your own, try free PCB CAD software such as KiCad or EAGLE and use the 3DoT PCB CAD files below as a reference.
 
-PCB CAD Files
--------------
+Schematis and PCB CAD Files
+---------------------------
 
-Updated files to be released soon.
+`Schematics <https://www.arxterra.com/downloads/3DoT%20Files/3DoTv10Schematic.pdf>`__
+
+`Altium PCB Files <https://www.arxterra.com/downloads/3DoT%20Files/Altium/>`__
+
+`PCB Files to import to other CAD (Eagle, KiCad etc..) <https://www.arxterra.com/downloads/3DoT%20Files/Other-CAD-Software/>`__
+
+

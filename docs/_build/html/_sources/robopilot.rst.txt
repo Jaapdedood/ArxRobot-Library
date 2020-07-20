@@ -8,6 +8,9 @@ Download the RoboPilot app on the Google Play Store:
 
 https://play.google.com/store/apps/details?id=com.HumansforRobots.RoboPilot&hl=en_US
 
+or on the App store:
+
+https://testflight.apple.com/join/AW41JCnI
 
 Connecting to Your Robot
 ------------------------

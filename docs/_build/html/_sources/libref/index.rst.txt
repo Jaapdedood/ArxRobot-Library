@@ -89,22 +89,67 @@ If you now create a custom command in the RoboPilot app with ID 0, it will call 
 Built-In Commands
 -----------------
 
+In its current state, the RoboPilot App only uses the Move and Ping Commands. Functionality for other commands in being ported over from the previous app.
 
+==================    ======  =================================================================================
+Name                  ID      params[]
+==================    ======  =================================================================================
+MOVE                  0x01    [0] = Left Direction, [1] = Left Speed, [2] = Right Direction, [3] = Right Speed
+CAMERA_MOVE           0x02    [0-1] = Pan, [2-3] = Tilt
+CAMERA_MOVE_HOME      0x03
+CAMERA_MOVE_RESET     0x04
+READ_EEPROM           0x06    [0-1] = Address, [2] = Number of Bytes to Read
+WRITE_EEPROM          0x07    [0-1] = Address, [2] = Number of Bytes to Write, [3-(2+N) = Data
+SAFE_ROVER            0x08
+SLEEP                 0x0A
+WAKEUP                0x0B
+HEADLIGHT_OFF         0x0C
+HEADLIGHT_ON          0x0D
+COMM_SETUP            0x10    [0] = Mode ID
+PING                  0x11
+==================    ======  =================================================================================
 
 Replacing Built-In Commands
 ---------------------------
 
+When using, for example, the D-pad or Tank controls on the app, the built-in MOVE command is called. If you wish to make the controls call your own function instead, simply write a custom command as explained in `Writing Custom Commands`_, then call:
 
+.. cpp:function:: void ArxRobot::replaceBuiltInCommand(uint8_t commandID, fptr_t function)
+
+    :param commandID: Command ID to associate with function. Can use macros defined above.
+    :param function: Name of function to add to custom commands list
+
+Example:
+
+.. code-block:: c++
+
+		void robotWalk((uint8_t cmd, uint8_t param[], uint8_t n)
+		{
+		   // Robot walking code here
+		}
+		
+		void setup()
+		{
+		    ArxRobot.begin();
+		
+		    ArxRobot.replaceBuiltInCommand(MOVE, robotWalk); 
+		}
 
 Data Packets
 ------------
 
+Click the "Show Console" Button in the RoboPilot app to see data packets sent and received.
 
+A Data Packet is constructed as follows:
 
-Custom Commands
----------------
+.. option:: Packet ID , Data Length (N) , Command ID , Data 0 , ... , Data N , Checksum
 
-
+	    * **Packet ID**: 0xA5 for a command, 0xCA for a telemetry message
+	    * **Data Length**: The number of data bytes sent in packet
+	    * **Command ID**: The command ID. E.g. 0x01 for MOVE
+	    * **Data[n]**: Data bytes
+	    * **Checksum**: XOR all the previous byte values to obtain `checksum <https://en.wikipedia.org/wiki/Checksum>`_
+	      
 
 Library Reference
 -----------------
