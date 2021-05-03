@@ -2,7 +2,7 @@ The 3DoT Board
 ==============
 Pinout
 ------
-.. figure:: https://www.arxterra.com/wp-content/uploads/2021/02/3dotpinout.jpg
+.. figure:: https://www.arxterra.com/wp-content/uploads/2021/05/3dotpinout.jpg
     :align: center
 
 Battery
